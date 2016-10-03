@@ -24,3 +24,12 @@ func (s *myStack) IsEmpty() bool {
 	}
 	return true
 }
+
+func (s *myStack) Clear() {
+	for {
+		if s.IsEmpty() == true {
+			return
+		}
+		s.Pop()
+	}
+}
