@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"strings"
-	"strconv"
 	"os"
+	"strconv"
+	"strings"
 )
 
 var priority = map[string]int{
@@ -30,14 +30,14 @@ func (s *myStack) Pop() string {
 		os.Exit(0)
 	}
 
-	topVal := s.stack[len(s.stack)-1]
-	s.stack = s.stack[:len(s.stack)-1]
+	topVal := s.stack[len(s.stack) - 1]
+	s.stack = s.stack[:len(s.stack) - 1]
 	return topVal
 }
 
 func (s *myStack) IsEmpty() bool {
 	if len(s.stack) > 0 {
-		return  false
+		return false
 	}
 	return true
 }
@@ -55,7 +55,6 @@ func main() {
 	var inStr string
 	fmt.Scan(&inStr)
 	//inStr := string("5+(1+2)*3")
-
 	// make input equation to list
 	tempStr := inStr
 
@@ -149,31 +148,89 @@ func main() {
 			case "*":
 				stack.Push(BigMul(a, b))
 			case "/":
-				if a == 0 {
+				if a == "0" {
 					fmt.Printf("ROCK")
 					return
 				}
-				stack.Push(BigDiv(b, a))
+				val, _ := BigDiv(b, a)
+				stack.Push(val)
 			}
 		}
 	}
 
 	fmt.Printf(stack.Pop())
 }
-func BigDiv(a string, b string) string {
-	return "1"
+
+func BigDiv(a string, b string) (string, string){
+	valA, signA := GetBigInt(a)
+	valB, signB := GetBigInt(b)
+
+	lenA := len(valA)
+	lenB := len(valB)
+
+	if signA != signB {
+		val, remain := BigDiv(valA, valB)
+		return "-" + val, remain
+	}
+
+	switch CompareAandB(valA, valB) {
+		case "<":
+			return "0", valA
+		case "=":
+			return "1", "0"
+	}
+
+	resultStr := ""
+
+	for i := 0 ; i < lenA - lenB + 1 ; i++ {
+		for j := 0 ; j <= 10 ; j++ {
+			if CompareAandB(BigMul(valB, strconv.Itoa(j)), valA[0:i + lenB]) == ">" {
+				resultStr = resultStr + strconv.Itoa(j-1)
+				temp := valB
+				for k := 0 ; k < lenA - lenB - i ; k++ {
+					temp = temp + "0"
+				}
+				valA = BigSub(valA, BigMul(strconv.Itoa(j-1), temp))
+				valA = padZero(valA, lenA)
+				break
+			}
+		}
+	}
+
+	return removeFrontZero(resultStr), removeFrontZero(valA)
 }
+func padZero(val string, length int) string {
+	for {
+		if len(val) == length {
+			return val
+		}
+		val = "0" + val
+	}
+}
+
 func BigMul(a string, b string) string {
 	valA, signA := GetBigInt(a)
 	valB, signB := GetBigInt(b)
 
-
-
-
-	resultString := ""
+	resultString := "0"
+	tempResults := make([]string, 0)
 
 	if signA != signB {
-		return "-" + resultString
+		return "-" + BigMul(valA, valB)
+	}
+
+	for i := len(valB) - 1 ; i >= 0 ; i-- {
+		for j := len(valA) - 1 ; j >= 0 ; j-- {
+			temp := strconv.Itoa(int(valA[j] - '0') * int(valB[i] - '0'))
+			for k := 0 ; k < len(valA) - j - 1 + len(valB) - i - 1; k++ {
+				temp = temp + "0"
+			}
+			tempResults = append(tempResults, temp)
+		}
+	}
+
+	for _, tempResult := range tempResults {
+		resultString = BigAdd(resultString, tempResult)
 	}
 
 	return resultString
@@ -198,17 +255,17 @@ func BigSub(a string, b string) string {
 	results := make([]byte, 0)
 
 	carry := false
-	for i := 0 ; true ; i++ {
+	for i := 0; true; i++ {
 		var aa, bb byte
 
 		if i < len(valA) {
-			aa = valA[len(valA)-i-1]
+			aa = valA[len(valA) - i - 1]
 		} else {
 			aa = '0'
 		}
 
 		if i < len(valB) {
-			bb = valB[len(valB)-i-1]
+			bb = valB[len(valB) - i - 1]
 		} else {
 			bb = '0'
 		}
@@ -226,35 +283,33 @@ func BigSub(a string, b string) string {
 		}
 
 		if len(valA) == i {
-			if results[i-1] == 0 {
-				results = results[:i-1]
-			} else if results[i] == 0 {
-				results = results[:i]
-			}
 			break
 		}
 	}
 
 	resultString := ""
 
-	for j := len(results)-1 ; j >= 0 ; j-- {
+	for j := len(results) - 1; j >= 0; j-- {
 		resultString = resultString + strconv.Itoa(int(results[j]))
 	}
 
-	return resultString
+	return removeFrontZero(resultString)
 }
 
 func CompareAandB(a string, b string) string {
-	if len(a) < len(b) {
+	valA, _ := GetBigInt(a)
+	valB, _ := GetBigInt(b)
+
+	if len(valA) < len(valB) {
 		return "<"
-	} else if len(a) > len(b) {
+	} else if len(valA) > len(valB) {
 		return ">"
 	}
 
-	for i := 0 ; i < len(a) ; i++ {
-		if a[i] > b[i] {
+	for i := 0; i < len(valA); i++ {
+		if valA[i] > valB[i] {
 			return ">"
-		} else if a[i] < b[i] {
+		} else if valA[i] < valB[i] {
 			return "<"
 		}
 	}
@@ -264,9 +319,18 @@ func CompareAandB(a string, b string) string {
 
 func GetBigInt(intString string) (string, bool) {
 	if intString[0] == '-' {
-		return intString[1:], false
+		return removeFrontZero(intString[1:]), false
 	}
-	return intString, true
+	return removeFrontZero(intString), true
+}
+
+func removeFrontZero(intString string) string {
+	for i, val := range intString {
+		if val != '0' {
+			return intString[i:]
+		}
+	}
+	return "0"
 }
 
 func BigAdd(a string, b string) string {
@@ -284,8 +348,8 @@ func BigAdd(a string, b string) string {
 	results := make([]uint8, 0)
 	carry := 0
 
-	lenA := len(a)
-	lenB := len(b)
+	lenA := len(valA)
+	lenB := len(valB)
 	lenBig := 0
 
 	if lenA > lenB {
@@ -294,18 +358,17 @@ func BigAdd(a string, b string) string {
 		lenBig = lenB
 	}
 
-
-	for i := 0 ; true ; i++ {
+	for i := 0; true; i++ {
 		var aa, bb byte
 
 		if i < lenA {
-			aa = a[lenA-i-1]
+			aa = valA[lenA - i - 1]
 		} else {
 			aa = '0'
 		}
 
 		if i < lenB {
-			bb = b[lenB-i-1]
+			bb = valB[lenB - i - 1]
 		} else {
 			bb = '0'
 		}
@@ -316,23 +379,19 @@ func BigAdd(a string, b string) string {
 		results = append(results, byte(sum))
 
 		if lenBig == i {
-			if results[i] == 0 {
-				results = results[:i]
-			}
 			break
 		}
 	}
 
 	resultString := ""
 
-	for j := len(results)-1 ; j >= 0 ; j-- {
+	for j := len(results) - 1; j >= 0; j-- {
 		resultString = resultString + strconv.Itoa(int(results[j]))
 	}
 
-	return resultString
+	return removeFrontZero(resultString)
 }
 
-func checkPriority(poped string, tok string) bool{
+func checkPriority(poped string, tok string) bool {
 	return priority[poped] >= priority[tok]
 }
-
