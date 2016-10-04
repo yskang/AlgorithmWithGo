@@ -1,3 +1,8 @@
+//
+// https://www.acmicpc.net/problem/1287
+// stack calculator with big integer
+//
+
 package main
 
 import (
