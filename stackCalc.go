@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -23,16 +22,15 @@ func (s *myStack) Push(v string) {
 	s.stack = append(s.stack, v)
 }
 
-func (s *myStack) Pop() string {
+func (s *myStack) Pop() (string, string) {
 
 	if s.IsEmpty() == true {
-		fmt.Printf("ROCK")
-		os.Exit(0)
+		return "0", "ROCK"
 	}
 
 	topVal := s.stack[len(s.stack) - 1]
 	s.stack = s.stack[:len(s.stack) - 1]
-	return topVal
+	return topVal, ""
 }
 
 func (s *myStack) IsEmpty() bool {
@@ -98,7 +96,11 @@ func main() {
 					stack.Push(tok)
 					break
 				} else {
-					poped := stack.Pop()
+					poped, err := stack.Pop()
+					if err != "" {
+						fmt.Printf("%s\n", err)
+						return
+					}
 					if checkPriority(poped, tok) == true {
 						outQueue = append(outQueue, poped)
 					} else {
@@ -110,7 +112,11 @@ func main() {
 			}
 		} else if tok == ")" {
 			for {
-				poped := stack.Pop()
+				poped, err := stack.Pop()
+				if err != "" {
+					fmt.Printf("%s\n", err)
+					return
+				}
 				if poped == "(" {
 					break
 				} else {
@@ -124,7 +130,12 @@ func main() {
 		if stack.IsEmpty() == true {
 			break
 		}
-		outQueue = append(outQueue, stack.Pop())
+		r, err := stack.Pop()
+		if err != "" {
+			fmt.Printf("%s\n", err)
+			return
+		}
+		outQueue = append(outQueue, r)
 	}
 
 	// check postfix form
@@ -137,9 +148,16 @@ func main() {
 		if tok[0] >= '0' && tok[0] <= '9' {
 			stack.Push(tok)
 		} else {
-			a := stack.Pop()
-			b := stack.Pop()
-
+			a, err := stack.Pop()
+			if err != "" {
+				fmt.Printf("%s\n", err)
+				return
+			}
+			b,  err:= stack.Pop()
+			if err != "" {
+				fmt.Printf("%s\n", err)
+				return
+			}
 			switch tok {
 			case "+":
 				stack.Push(BigAdd(a, b))
@@ -148,8 +166,13 @@ func main() {
 			case "*":
 				stack.Push(BigMul(a, b))
 			case "/":
-				if a == "0" {
-					fmt.Printf("ROCK")
+				if err != "" {
+					fmt.Printf("%s\n", err)
+					return
+				}
+				v, _ := GetBigInt(a)
+				if v == "0" {
+					fmt.Printf("ROCK\n")
 					return
 				}
 				val, _ := BigDiv(b, a)
@@ -157,8 +180,12 @@ func main() {
 			}
 		}
 	}
-
-	fmt.Printf(stack.Pop())
+	r, err := stack.Pop()
+	if err != "" {
+		fmt.Printf("%s\n", err)
+		return
+	}
+	fmt.Printf("%s\n", r)
 }
 
 func BigDiv(a string, b string) (string, string){
@@ -199,6 +226,7 @@ func BigDiv(a string, b string) (string, string){
 
 	return removeFrontZero(resultStr), removeFrontZero(valA)
 }
+
 func padZero(val string, length int) string {
 	for {
 		if len(val) == length {
