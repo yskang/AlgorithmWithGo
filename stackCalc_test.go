@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+	"fmt"
 )
 
 func TestBigAdd(t *testing.T) {
@@ -158,4 +159,9 @@ func TestBigDiv(t *testing.T) {
 	if minus != "-15493" || minusRe != "6557" {
 		t.Error("minus Error!", minus, minusRe)
 	}
+}
+
+func TestMyStack_Clear(t *testing.T) {
+	s := " "
+	fmt.Println(s[0])
 }

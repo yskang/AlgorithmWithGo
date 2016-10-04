@@ -50,10 +50,26 @@ func (s *myStack) Clear() {
 }
 
 func main() {
-	var inStr string
-	fmt.Scan(&inStr)
+	var inStr, e string
+	fmt.Scanf("%s %s", &inStr, &e)
 	//inStr := string("5+(1+2)*3")
 	// make input equation to list
+
+	if inStr == "" {
+		fmt.Println("ROCK")
+		return
+	}
+
+	if strings.Contains(inStr, ",") == true {
+		fmt.Println("ROCK")
+		return
+	}
+
+	if e != "" {
+		fmt.Println("ROCK")
+		return
+	}
+
 	tempStr := inStr
 
 	tempStr = strings.Replace(tempStr, "(", ",(,", -1)
@@ -146,6 +162,10 @@ func main() {
 
 	for _, tok := range outQueue {
 		if tok[0] >= '0' && tok[0] <= '9' {
+			if checkNumber(tok) == false {
+				fmt.Println("ROCK")
+				return
+			}
 			stack.Push(tok)
 		} else {
 			a, err := stack.Pop()
@@ -166,10 +186,6 @@ func main() {
 			case "*":
 				stack.Push(BigMul(a, b))
 			case "/":
-				if err != "" {
-					fmt.Printf("%s\n", err)
-					return
-				}
 				v, _ := GetBigInt(a)
 				if v == "0" {
 					fmt.Printf("ROCK\n")
@@ -186,6 +202,15 @@ func main() {
 		return
 	}
 	fmt.Printf("%s\n", r)
+}
+
+func checkNumber(n string) bool{
+	for _, c := range n {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return true
 }
 
 func BigDiv(a string, b string) (string, string){
