@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestBigAdd(t *testing.T) {
 	simple := BigAdd("100000", "1")
@@ -8,6 +10,11 @@ func TestBigAdd(t *testing.T) {
 	nn := BigAdd("-1", "-1")
 	np := BigAdd("-1", "10")
 	pn := BigAdd("10", "-1")
+	zero := BigAdd("0000", "0000")
+
+	if zero != "0" {
+		t.Error("zero error!", zero)
+	}
 
 	if simple != "100001" {
 		t.Fail()
@@ -33,6 +40,16 @@ func TestBigAdd(t *testing.T) {
 func TestGetBigInt(t *testing.T) {
 	posVal, pos := GetBigInt("123456789")
 	negVal, neg := GetBigInt("-123456789")
+	zero, pos := GetBigInt("000000")
+	zeroNum, pos := GetBigInt("000100")
+
+	if zeroNum != "100" {
+		t.Error("zeroNum error", zeroNum)
+	}
+
+	if zero != "0" {
+		t.Error("zero error", zero)
+	}
 
 	if posVal != "123456789" {
 		t.Error("value error : ", posVal)
@@ -104,5 +121,41 @@ func TestBigSub(t *testing.T) {
 
 	if pn != "246912" {
 		t.Error("Positive - Negative", np)
+	}
+}
+
+func TestBigMul(t *testing.T) {
+	simple := BigMul("12345", "54321")
+	zero := BigMul("12345", "0")
+	minus := BigMul("-12345", "54321")
+
+	if minus != "-670592745" {
+		t.Error("minus error!", minus)
+	}
+
+	if simple != "670592745" {
+		t.Error("simple error!", simple)
+	}
+
+	if zero != "0" {
+		t.Error("zero error!", zero)
+	}
+}
+
+func TestBigDiv(t *testing.T) {
+	simple, remainder := BigDiv("1", "1")
+	large, largeRe := BigDiv("987654321", "63748")
+	minus, minusRe := BigDiv("987654321", "-63748")
+
+	if simple != "1" || remainder != "0" {
+		t.Error("simple Error!", simple, remainder)
+	}
+
+	if large != "15493" || largeRe != "6557" {
+		t.Error("large Error!", large, largeRe)
+	}
+
+	if minus != "-15493" || minusRe != "6557" {
+		t.Error("minus Error!", minus, minusRe)
 	}
 }
