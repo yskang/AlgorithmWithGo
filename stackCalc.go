@@ -206,6 +206,10 @@ func main() {
 		fmt.Printf("%s\n", err)
 		return
 	}
+	if stack.IsEmpty() == false {
+		fmt.Println("ROCK")
+		return
+	}
 	fmt.Printf("%s\n", r)
 }
 
