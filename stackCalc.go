@@ -27,15 +27,14 @@ func (s *myStack) Push(v string) {
 	s.stack = append(s.stack, v)
 }
 
-func (s *myStack) Pop() (string, string) {
-
+func (s *myStack) Pop() (string, bool) {
 	if s.IsEmpty() == true {
-		return "0", "ROCK"
+		return "0", false
 	}
 
 	topVal := s.stack[len(s.stack) - 1]
 	s.stack = s.stack[:len(s.stack) - 1]
-	return topVal, ""
+	return topVal, true
 }
 
 func (s *myStack) IsEmpty() bool {
@@ -54,51 +53,37 @@ func (s *myStack) Clear() {
 	}
 }
 
-func main() {
-	var inStr, e string
-	fmt.Scanf("%s %s", &inStr, &e)
-	//inStr := string("5+(1+2)*3")
-	// make input equation to list
+func parseInputString(equationStr string) []string {
+	equationStr = strings.Replace(equationStr, "(", ",(,", -1)
+	equationStr = strings.Replace(equationStr, ")", ",),", -1)
+	equationStr = strings.Replace(equationStr, "+", ",+,", -1)
+	equationStr = strings.Replace(equationStr, "-", ",-,", -1)
+	equationStr = strings.Replace(equationStr, "/", ",/,", -1)
+	equationStr = strings.Replace(equationStr, "*", ",*,", -1)
 
-	if inStr == "" {
-		fmt.Println("ROCK")
-		return
-	}
-
-	if strings.Contains(inStr, ",") == true {
-		fmt.Println("ROCK")
-		return
-	}
-
-	if e != "" {
-		fmt.Println("ROCK")
-		return
-	}
-
-	tempStr := inStr
-
-	tempStr = strings.Replace(tempStr, "(", ",(,", -1)
-	tempStr = strings.Replace(tempStr, ")", ",),", -1)
-	tempStr = strings.Replace(tempStr, "+", ",+,", -1)
-	tempStr = strings.Replace(tempStr, "-", ",-,", -1)
-	tempStr = strings.Replace(tempStr, "/", ",/,", -1)
-	tempStr = strings.Replace(tempStr, "*", ",*,", -1)
-
-	inBuffTemp := strings.Split(tempStr, ",")
-	inBuff := make([]string, len(inBuffTemp))
-
-	i := 0
+	inBuffTemp := strings.Split(equationStr, ",")
+	inBuff := make([]string, 0)
 
 	for _, str := range inBuffTemp {
 		if str != "" {
-			inBuff[i] = str
-			i++
+			inBuff = append(inBuff, str)
 		}
 	}
+	return inBuff
+}
 
-	// convert to postfix form
+func checkEquationValid(equationStr string) bool {
+	if equationStr == "" {
+		return false
+	}
+	if strings.Contains(equationStr, ",") == true {
+		return false
+	}
+	return true
+}
+
+func infixToPostfix(inBuff []string) ([]string, bool) {
 	stack := myStack{make([]string, 0)}
-
 	outQueue := make([]string, 0)
 
 	for _, tok := range inBuff {
@@ -106,7 +91,6 @@ func main() {
 			break
 		}
 		if tok[0] >= '0' && tok[0] <= '9' {
-			// if token is value, push to outQueue
 			outQueue = append(outQueue, tok)
 		} else if tok == "(" {
 			stack.Push(tok)
@@ -117,11 +101,11 @@ func main() {
 					stack.Push(tok)
 					break
 				} else {
-					poped, err := stack.Pop()
-					if err != "" {
-						fmt.Printf("%s\n", err)
-						return
+					poped, valid := stack.Pop()
+					if valid == false {
+						return []string{""}, false
 					}
+
 					if checkPriority(poped, tok) == true {
 						outQueue = append(outQueue, poped)
 					} else {
@@ -133,10 +117,9 @@ func main() {
 			}
 		} else if tok == ")" {
 			for {
-				poped, err := stack.Pop()
-				if err != "" {
-					fmt.Printf("%s\n", err)
-					return
+				poped, valid := stack.Pop()
+				if valid == false {
+					return []string{""}, false
 				}
 				if poped == "(" {
 					break
@@ -144,6 +127,8 @@ func main() {
 					outQueue = append(outQueue, poped)
 				}
 			}
+		} else {
+			return []string{""}, false
 		}
 	}
 
@@ -151,37 +136,33 @@ func main() {
 		if stack.IsEmpty() == true {
 			break
 		}
-		r, err := stack.Pop()
-		if err != "" {
-			fmt.Printf("%s\n", err)
-			return
+		r, valid := stack.Pop()
+		if valid == false {
+			return []string{""}, false
 		}
 		outQueue = append(outQueue, r)
 	}
 
-	// check postfix form
-	//fmt.Println(outQueue)
+	return outQueue, true
+}
 
-	// calculate!!
-	stack.Clear()
+func calcPostfix(postfix []string) (string, bool) {
+	stack := myStack{make([]string, 0)}
 
-	for _, tok := range outQueue {
+	for _, tok := range postfix {
 		if tok[0] >= '0' && tok[0] <= '9' {
 			if checkNumber(tok) == false {
-				fmt.Println("ROCK")
-				return
+				return "", false
 			}
 			stack.Push(tok)
 		} else {
-			a, err := stack.Pop()
-			if err != "" {
-				fmt.Printf("%s\n", err)
-				return
+			a, valid := stack.Pop()
+			if valid == false {
+				return "", false
 			}
-			b,  err:= stack.Pop()
-			if err != "" {
-				fmt.Printf("%s\n", err)
-				return
+			b, valid := stack.Pop()
+			if valid == false {
+				return "", false
 			}
 			switch tok {
 			case "+":
@@ -193,24 +174,18 @@ func main() {
 			case "/":
 				v, _ := GetBigInt(a)
 				if v == "0" {
-					fmt.Printf("ROCK\n")
-					return
+					return "", false
 				}
 				val, _ := BigDiv(b, a)
 				stack.Push(val)
 			}
 		}
 	}
-	r, err := stack.Pop()
-	if err != "" {
-		fmt.Printf("%s\n", err)
-		return
+	result, valid := stack.Pop()
+	if valid == false {
+		return "", false
 	}
-	if stack.IsEmpty() == false {
-		fmt.Println("ROCK")
-		return
-	}
-	fmt.Printf("%s\n", r)
+	return result, stack.IsEmpty()
 }
 
 func checkNumber(n string) bool{
@@ -456,4 +431,32 @@ func BigAdd(a string, b string) string {
 
 func checkPriority(poped string, tok string) bool {
 	return priority[poped] >= priority[tok]
+}
+
+func main() {
+	var inStr, e string
+	fmt.Scanf("%s %s", &inStr, &e)
+
+	if e != "" {
+		fmt.Println("ROCK")
+		return
+	}
+
+	if checkEquationValid(inStr) == false {
+		fmt.Println("ROCK")
+		return
+	}
+
+	inBuff := parseInputString(inStr)
+	outQueue, valid := infixToPostfix(inBuff)
+	if valid == false {
+		fmt.Println("ROCK")
+		return
+	}
+	result, valid := calcPostfix(outQueue)
+	if valid == false {
+		fmt.Println("ROCK")
+		return
+	}
+	fmt.Printf("%s\n", result)
 }
