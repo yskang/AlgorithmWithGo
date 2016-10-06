@@ -4,10 +4,6 @@ package main
 
 import (
 	"fmt"
-	"bufio"
-	"os"
-	"strings"
-	"strconv"
 )
 
 type Doc struct {
@@ -19,11 +15,11 @@ type MyQueue struct{
 	myQueue []Doc
 }
 
-func (q *MyQueue) push(data Doc) {
+func (q *MyQueue) pushPQ(data Doc) {
 	q.myQueue = append(q.myQueue, data)
 }
 
-func (q *MyQueue) pop() (Doc, bool) {
+func (q *MyQueue) popPQ() (Doc, bool) {
 	if len(q.myQueue) == 0 {
 		return Doc{0, 0}, false
 	}
@@ -33,7 +29,7 @@ func (q *MyQueue) pop() (Doc, bool) {
 	return result, true
 }
 
-func (q *MyQueue) size() int {
+func (q *MyQueue) sizePQ() int {
 	return len(q.myQueue)
 }
 
@@ -44,14 +40,14 @@ func (q *MyQueue) isEmpty() bool {
 	return false
 }
 
-func (q *MyQueue) front() (Doc, bool) {
+func (q *MyQueue) frontPQ() (Doc, bool) {
 	if len(q.myQueue) == 0 {
 		return Doc{0, 0}, false
 	}
 	return q.myQueue[0], true
 }
 
-func (q *MyQueue) back() (Doc, bool) {
+func (q *MyQueue) backPQ() (Doc, bool) {
 	if len(q.myQueue) == 0 {
 		return Doc{0, 0}, false
 	}
@@ -70,26 +66,22 @@ func isBigPriority(p int, docs []Doc) bool {
 func main() {
 	numOfTest := 0
 	fmt.Scanf("%d\n", &numOfTest)
-	reader := bufio.NewReader(os.Stdin)
-	var pStr string
 	for i := 0 ; i < numOfTest ; i++ {
 		printCount := 0
 		var num, pos int
 		fmt.Scanf("%d %d\n", &num, &pos)
-		pStr, _ = reader.ReadString('\n')
-		pStr = strings.Replace(pStr, "\n", "", -1)
-
 		queue := MyQueue{make([]Doc, 0)}
-		for i, v := range strings.Split(pStr, " ") {
-			val, _ := strconv.Atoi(v)
-			queue.push(Doc{i, val})
+		for j := 0 ; j < num ; j++ {
+			var docPriority int
+			fmt.Scanf("%d", &docPriority)
+			queue.pushPQ(Doc{j, docPriority})
 		}
 
 		for {
-			doc, _ := queue.pop()
+			doc, _ := queue.popPQ()
 
 			if isBigPriority(doc.priority, queue.myQueue) == true {
-				queue.push(doc)
+				queue.pushPQ(doc)
 			} else {
 				printCount++
 				if doc.name == pos {

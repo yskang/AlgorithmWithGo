@@ -102,17 +102,17 @@ func isInSlice(slice *[]int, elem int) bool {
 func BFS(g *Graph, v int) []int {
 	visit := make([]int, 0)
 	queue := MyQueue{make([]int, 0)}
-	queue.push(v)
+	queue.pushPQ(v)
 	for {
 		if queue.empty() == 1 {
 			return visit
 		}
-		for _, node := range g.edges[queue.front()] {
+		for _, node := range g.edges[queue.frontPQ()] {
 			if isInSlice(&visit, node) == false {
-				queue.push(node)
+				queue.pushPQ(node)
 			}
 		}
-		visit = append(visit, queue.pop())
+		visit = append(visit, queue.popPQ())
 	}
 }
 

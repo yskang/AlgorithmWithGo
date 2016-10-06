@@ -62,17 +62,17 @@ func main() {
 		fmt.Scanf("%s %d\n", &inComm, &inData)
 		switch inComm {
 		case "push":
-			queue.push(inData)
+			queue.pushPQ(inData)
 		case "pop":
-			outStr = append(outStr, strconv.Itoa(queue.pop()))
+			outStr = append(outStr, strconv.Itoa(queue.popPQ()))
 		case "size":
-			outStr = append(outStr, strconv.Itoa(queue.size()))
+			outStr = append(outStr, strconv.Itoa(queue.sizePQ()))
 		case "empty":
 			outStr = append(outStr, strconv.Itoa(queue.empty()))
 		case "front":
-			outStr = append(outStr, strconv.Itoa(queue.front()))
+			outStr = append(outStr, strconv.Itoa(queue.frontPQ()))
 		case "back":
-			outStr = append(outStr, strconv.Itoa(queue.back()))
+			outStr = append(outStr, strconv.Itoa(queue.backPQ()))
 		}
 	}
 
