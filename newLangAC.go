@@ -2,37 +2,29 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
+	"bufio"
+	"os"
 )
 
-func printArray(arr []int, isReverse bool) {
-	arrStr := "["
-	var index int
-	for i := 0 ; i < len(arr) ; i++ {
-		if isReverse {
-			index = len(arr) - i - 1
-		} else {
-			index = i
-		}
-		arrStr = arrStr + strconv.Itoa(arr[index])
-		if i != len(arr) - 1 {
-			arrStr = arrStr + ","
-		}
-	}
-	arrStr = arrStr + "]"
-	println(arrStr)
-}
-
-func delFirst(arr []int, isReverse bool) ([]int, bool) {
-	if len(arr) == 0 {
-		return arr, false
+func printArray(array string, isReverse bool, start int, end int) {
+	if start >= end {
+		fmt.Println("[]")
+		return
 	}
 
-	if isReverse {
-		return arr[:len(arr) - 1], true
+	if !isReverse {
+		fmt.Println("[" + array[start:end] + "]");
 	} else {
-		return arr[1:], true
+		arrayStr := strings.Split(array[start:end], ",")
+		result := "["
+		for i := len(arrayStr) - 1; i >= 0; i-- {
+			result = result + arrayStr[i] + ","
+		}
+		result = strings.TrimRight(result, ",")
+		result = result + "]"
+
+		fmt.Println(result)
 	}
 }
 
@@ -40,58 +32,65 @@ func main() {
 	numTest := 0
 	fmt.Scanf("%d\n", &numTest)
 
-	for i := 0 ; i < numTest ; i++ {
-		valid := true
-		isReverse := false
-		command := ""
-		arrSize := 0
-		inStr := ""
-		array := make([]int, 0)
-		fmt.Scanf("%s\n", &command)
-		fmt.Scanf("%d\n", &arrSize)
-		fmt.Scanf("[%s]\n", &inStr)
+	scanner := bufio.NewScanner(os.Stdin)
 
-		inStr = strings.Replace(inStr, "]", "", 1)
-		inStrArray := strings.Split(inStr, ",")
+	inStrings := make([]string, 0)
 
-		for _, v := range inStrArray {
-			v = strings.TrimSpace(v)
-			intVal, err := strconv.Atoi(v)
-			if err == nil {
-				array = append(array, intVal)
-			} else {
-				fmt.Println("error!!", v)
-				valid = false
-				break
-			}
-		}
+	for scanner.Scan() {
+		inStrings = append(inStrings, scanner.Text())
 
-		if len(array) != arrSize || valid == false{
-			valid = false
-		} else {
+		if len(inStrings) == 3 {
+			numTest = numTest - 1
+			valid := true
+			isReverse := false
+
+			command := inStrings[0]
+			arrayString := inStrings[2]
+
+			start := 1
+			end := len(arrayString) - 1
+
 			for _, com := range command {
 				switch com {
 				case 'R':
 					isReverse = !isReverse
 				case 'D':
-					array, valid = delFirst(array, isReverse)
-					if valid == false {
+					if end - start <= 0 {
+						valid = false
 						break
 					}
+					if !isReverse {
+						for j := start; true; j++ {
+							if arrayString[j] == ',' || arrayString[j] == ']' {
+								start = j + 1
+								break
+							}
+						}
+					} else {
+						for j := end; true; j-- {
+							if arrayString[j - 1] == ',' || arrayString[j - 1] == '[' {
+								end = j - 1
+								break
+							}
+						}
+					}
 				default:
-					fmt.Println("error!!",com)
 					valid = false
 					break
 				}
 			}
+
+			if valid == false {
+				fmt.Println("error")
+			} else {
+				printArray(arrayString, isReverse, start, end)
+			}
+
+			inStrings = inStrings[:0]
 		}
 
-
-		if valid == false {
-			fmt.Println("error")
-		} else {
-			printArray(array, isReverse)
+		if numTest == 0 {
+			break
 		}
 	}
-	return
 }
