@@ -1,6 +1,5 @@
 // https://www.acmicpc.net/problem/10845
-
-package main
+package baekjoon
 
 import (
 	"fmt"
@@ -8,15 +7,15 @@ import (
 	"strconv"
 )
 
-type MyQueue struct{
+type BQueue struct{
 	myQueue []int
 }
 
-func (q *MyQueue) push(data int) {
+func (q *BQueue) push(data int) {
 	q.myQueue = append(q.myQueue, data)
 }
 
-func (q *MyQueue) pop() int {
+func (q *BQueue) pop() int {
 	if len(q.myQueue) == 0 {
 		return -1
 	}
@@ -26,34 +25,34 @@ func (q *MyQueue) pop() int {
 	return result
 }
 
-func (q *MyQueue) size() int {
+func (q *BQueue) size() int {
 	return len(q.myQueue)
 }
 
-func (q *MyQueue) empty() int {
+func (q *BQueue) empty() int {
 	if len(q.myQueue) == 0 {
 		return 1
 	}
 	return 0
 }
 
-func (q *MyQueue) front() int {
+func (q *BQueue) front() int {
 	if len(q.myQueue) == 0 {
 		return -1
 	}
 	return q.myQueue[0]
 }
 
-func (q *MyQueue) back() int {
+func (q *BQueue) back() int {
 	if len(q.myQueue) == 0 {
 		return -1
 	}
 	return q.myQueue[len(q.myQueue) - 1]
 }
 
-func main() {
+func BasicQueue() {
 	outStr := make([]string, 0)
-	queue := MyQueue{make([]int, 0)}
+	queue := BQueue{make([]int, 0)}
 	inComm := ""
 	inData := 0
 	num := 0
@@ -62,17 +61,17 @@ func main() {
 		fmt.Scanf("%s %d\n", &inComm, &inData)
 		switch inComm {
 		case "push":
-			queue.pushPQ(inData)
+			queue.push(inData)
 		case "pop":
-			outStr = append(outStr, strconv.Itoa(queue.popPQ()))
+			outStr = append(outStr, strconv.Itoa(queue.pop()))
 		case "size":
-			outStr = append(outStr, strconv.Itoa(queue.sizePQ()))
+			outStr = append(outStr, strconv.Itoa(queue.size()))
 		case "empty":
 			outStr = append(outStr, strconv.Itoa(queue.empty()))
 		case "front":
-			outStr = append(outStr, strconv.Itoa(queue.frontPQ()))
+			outStr = append(outStr, strconv.Itoa(queue.front()))
 		case "back":
-			outStr = append(outStr, strconv.Itoa(queue.backPQ()))
+			outStr = append(outStr, strconv.Itoa(queue.back()))
 		}
 	}
 

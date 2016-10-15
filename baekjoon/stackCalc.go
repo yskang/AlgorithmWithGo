@@ -3,7 +3,7 @@
 // stack calculator with big integer
 //
 
-package main
+package baekjoon
 
 import (
 	"fmt"
@@ -433,7 +433,7 @@ func checkPriority(poped string, tok string) bool {
 	return priority[poped] >= priority[tok]
 }
 
-func main() {
+func stackCalc() {
 	var inStr, e string
 	fmt.Scanf("%s %s", &inStr, &e)
 

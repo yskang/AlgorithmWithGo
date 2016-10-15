@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/10866
 
-package main
+package baekjoon
 
 import (
 	"fmt"
@@ -67,7 +67,7 @@ func (d *Deque) back() int {
 	return d.deque[len(d.deque) - 1]
 }
 
-func main() {
+func SimpleDeque() {
 	dq := Deque{make([]int, 0)}
 	scanner := bufio.NewScanner(os.Stdin)
 

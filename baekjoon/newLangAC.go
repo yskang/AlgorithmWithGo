@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/5430
 
-package main
+package baekjoon
 
 import (
 	"fmt"
@@ -30,7 +30,7 @@ func printArray(array string, isReverse bool, start int, end int) {
 	}
 }
 
-func main() {
+func NewLangAC() {
 	numTest := 0
 	fmt.Scanf("%d\n", &numTest)
 

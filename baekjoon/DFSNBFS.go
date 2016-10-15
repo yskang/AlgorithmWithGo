@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/1260
 
-package main
+package baekjoon
 
 import (
 	"fmt"
@@ -36,14 +36,14 @@ type MyQueue struct{
 	myQueue []int
 }
 
-func (q *MyQueue) push(data int) {
+func (q *MyQueue) pushDFSNBFS(data int) {
 	if isInSlice(&q.myQueue, data) == true {
 		return
 	}
 	q.myQueue = append(q.myQueue, data)
 }
 
-func (q *MyQueue) pop() int {
+func (q *MyQueue) popDFSNBFS() int {
 	if len(q.myQueue) == 0 {
 		return -1
 	}
@@ -53,25 +53,25 @@ func (q *MyQueue) pop() int {
 	return result
 }
 
-func (q *MyQueue) size() int {
+func (q *MyQueue) sizeDFSNBFS() int {
 	return len(q.myQueue)
 }
 
-func (q *MyQueue) empty() int {
+func (q *MyQueue) emptyDFSNBFS() int {
 	if len(q.myQueue) == 0 {
 		return 1
 	}
 	return 0
 }
 
-func (q *MyQueue) front() int {
+func (q *MyQueue) frontDFSNBFS() int {
 	if len(q.myQueue) == 0 {
 		return -1
 	}
 	return q.myQueue[0]
 }
 
-func (q *MyQueue) back() int {
+func (q *MyQueue) backDFSNBFS() int {
 	if len(q.myQueue) == 0 {
 		return -1
 	}
@@ -102,21 +102,21 @@ func isInSlice(slice *[]int, elem int) bool {
 func BFS(g *Graph, v int) []int {
 	visit := make([]int, 0)
 	queue := MyQueue{make([]int, 0)}
-	queue.pushPQ(v)
+	queue.pushDFSNBFS(v)
 	for {
-		if queue.empty() == 1 {
+		if queue.emptyDFSNBFS() == 1 {
 			return visit
 		}
-		for _, node := range g.edges[queue.frontPQ()] {
+		for _, node := range g.edges[queue.frontDFSNBFS()] {
 			if isInSlice(&visit, node) == false {
-				queue.pushPQ(node)
+				queue.pushDFSNBFS(node)
 			}
 		}
-		visit = append(visit, queue.popPQ())
+		visit = append(visit, queue.popDFSNBFS())
 	}
 }
 
-func main() {
+func DFSNBFS() {
 	var n, m, v int
 	fmt.Scanf("%d %d %d\n", &n, &m, &v)
 

@@ -1,10 +1,10 @@
 // https://www.acmicpc.net/problem/2579
 
-package main
+package baekjoon
 
 import "fmt"
 
-func main() {
+func StepUpDynamicProgramming() {
 	var numStep, score int
 	fmt.Scanf("%d\n", &numStep)
 
@@ -18,16 +18,16 @@ func main() {
 
 	scores[0] = step[0]
 	scores[1] = step[1] + step[0]
-	scores[2] = step[2] + max(scores[0], step[1])
+	scores[2] = step[2] + maxStep(scores[0], step[1])
 
 	for i := 3 ; i < numStep ; i++ {
-		scores[i] = step[i] + max(scores[i-2], scores[i-3] + step[i-1])
+		scores[i] = step[i] + maxStep(scores[i-2], scores[i-3] + step[i-1])
 	}
 
 	fmt.Println(scores[numStep-1])
 }
 
-func max(a int, b int) int {
+func maxStep(a int, b int) int {
 	if a > b {
 		return a
 	}

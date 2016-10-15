@@ -1,11 +1,11 @@
 // https://www.acmicpc.net/problem/2747
 // https://www.acmicpc.net/problem/2748
 
-package main
+package baekjoon
 
 import "fmt"
 
-func main() {
+func FibonacciNumber() {
 	num := 0
 	fmt.Scanf("%d\n", &num)
 

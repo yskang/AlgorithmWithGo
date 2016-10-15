@@ -1,17 +1,18 @@
-package main
+package tests
 
 import (
 	"testing"
 	"fmt"
+	"AlgorithmWithGo/myLibs"
 )
 
 func TestBigAdd(t *testing.T) {
-	simple := BigAdd("100000", "1")
-	carry := BigAdd("9999", "2")
-	nn := BigAdd("-1", "-1")
-	np := BigAdd("-1", "10")
-	pn := BigAdd("10", "-1")
-	zero := BigAdd("0000", "0000")
+	simple := myLibs.BigAdd("100000", "1")
+	carry := myLibs.BigAdd("9999", "2")
+	nn := myLibs.BigAdd("-1", "-1")
+	np := myLibs.BigAdd("-1", "10")
+	pn := myLibs.BigAdd("10", "-1")
+	zero := myLibs.BigAdd("0000", "0000")
 
 	if zero != "0" {
 		t.Error("zero error!", zero)
@@ -39,10 +40,10 @@ func TestBigAdd(t *testing.T) {
 }
 
 func TestGetBigInt(t *testing.T) {
-	posVal, pos := GetBigInt("123456789")
-	negVal, neg := GetBigInt("-123456789")
-	zero, pos := GetBigInt("000000")
-	zeroNum, pos := GetBigInt("000100")
+	posVal, pos := myLibs.GetBigInt("123456789")
+	negVal, neg := myLibs.GetBigInt("-123456789")
+	zero, pos := myLibs.GetBigInt("000000")
+	zeroNum, pos := myLibs.GetBigInt("000100")
 
 	if zeroNum != "100" {
 		t.Error("zeroNum error", zeroNum)
@@ -70,9 +71,9 @@ func TestGetBigInt(t *testing.T) {
 }
 
 func TestCompareAandB(t *testing.T) {
-	equal := CompareAandB("12345", "12345")
-	bigA := CompareAandB("12346", "12345")
-	bigB := CompareAandB("12345", "12346")
+	equal := myLibs.CompareAandB("12345", "12345")
+	bigA := myLibs.CompareAandB("12346", "12345")
+	bigB := myLibs.CompareAandB("12345", "12346")
 
 	if equal != "=" {
 		t.Error("equal failure")
@@ -88,13 +89,13 @@ func TestCompareAandB(t *testing.T) {
 }
 
 func TestBigSub(t *testing.T) {
-	simple := BigSub("2", "1")
-	zero := BigSub("123", "123")
-	carry := BigSub("10000000", "9")
-	negative := BigSub("1", "100000")
-	nn := BigSub("-123456", "-654321")
-	np := BigSub("-123456", "123456")
-	pn := BigSub("123456", "-123456")
+	simple := myLibs.BigSub("2", "1")
+	zero := myLibs.BigSub("123", "123")
+	carry := myLibs.BigSub("10000000", "9")
+	negative := myLibs.BigSub("1", "100000")
+	nn := myLibs.BigSub("-123456", "-654321")
+	np := myLibs.BigSub("-123456", "123456")
+	pn := myLibs.BigSub("123456", "-123456")
 
 	if simple != "1" {
 		t.Error("Error!", simple)
@@ -126,9 +127,9 @@ func TestBigSub(t *testing.T) {
 }
 
 func TestBigMul(t *testing.T) {
-	simple := BigMul("12345", "54321")
-	zero := BigMul("12345", "0")
-	minus := BigMul("-12345", "54321")
+	simple := myLibs.BigMul("12345", "54321")
+	zero := myLibs.BigMul("12345", "0")
+	minus := myLibs.BigMul("-12345", "54321")
 
 	if minus != "-670592745" {
 		t.Error("minus error!", minus)
@@ -144,9 +145,9 @@ func TestBigMul(t *testing.T) {
 }
 
 func TestBigDiv(t *testing.T) {
-	simple, remainder := BigDiv("1", "1")
-	large, largeRe := BigDiv("987654321", "63748")
-	minus, minusRe := BigDiv("987654321", "-63748")
+	simple, remainder := myLibs.BigDiv("1", "1")
+	large, largeRe := myLibs.BigDiv("987654321", "63748")
+	minus, minusRe := myLibs.BigDiv("987654321", "-63748")
 
 	if simple != "1" || remainder != "0" {
 		t.Error("simple Error!", simple, remainder)

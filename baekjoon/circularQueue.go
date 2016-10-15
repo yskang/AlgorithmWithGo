@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/1021
 
-package main
+package baekjoon
 
 import (
 	"bufio"
@@ -57,7 +57,7 @@ func (c *CQueue) circulateRight() {
 	c.cQueue = append([]int{temp}, c.cQueue[:len(c.cQueue) - 1]...)
 }
 
-func main() {
+func CircularQueue() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	var sizeQ, numOut int

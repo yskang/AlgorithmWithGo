@@ -1,10 +1,10 @@
 // https://www.acmicpc.net/problem/11050
 
-package main
+package baekjoon
 
 import "fmt"
 
-func main() {
+func BinomialCoefficient() {
 	var n uint
 	var k int
 

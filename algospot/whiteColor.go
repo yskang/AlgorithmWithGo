@@ -1,0 +1,4 @@
+package algospot
+
+func WhiteColor() {
+}

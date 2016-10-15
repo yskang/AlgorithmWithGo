@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/1149
 
-package main
+package baekjoon
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 var valueTable = make([][]int, 0)
 
-func main() {
+func StreetOfRGB() {
 	var numHouse, r, g, b int
 	costTable := make([][]int, 0)
 

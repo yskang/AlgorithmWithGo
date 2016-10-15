@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/11051
 
-package main
+package baekjoon
 
 import "fmt"
 
@@ -11,7 +11,7 @@ type BC struct{
 
 var bcMap map[BC]int64
 
-func main() {
+func BinomialCoefficientByDP() {
 	var n, k int
 	fmt.Scanf("%d %d\n", &n, &k)
 

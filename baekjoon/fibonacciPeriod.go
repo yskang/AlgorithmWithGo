@@ -1,11 +1,11 @@
 // https://www.acmicpc.net/problem/2749
 // success!
 
-package main
+package baekjoon
 
 import "fmt"
 
-func main() {
+func FibonacciPeriod() {
 	mod := uint64(1000000)
 	p := uint64(mod/10 * 15)
 	fibo := make([]uint64, p)

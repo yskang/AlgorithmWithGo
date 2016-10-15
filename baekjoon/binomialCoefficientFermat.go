@@ -1,12 +1,12 @@
 // https://www.acmicpc.net/problem/11401
 
-package main
+package baekjoon
 
 import (
 	"fmt"
 )
 
-func main() {
+func binomialCoefficientFermat() {
 	var n, r uint64
 
 	fmt.Scanf("%d %d\n", &n, &r)

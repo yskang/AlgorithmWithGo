@@ -1,12 +1,12 @@
 // https://www.acmicpc.net/problem/1003
 
-package main
+package baekjoon
 
 import "fmt"
 
 var count_0, count_1 int
 
-func main() {
+func FibonacciRecursionCount() {
 	var n, nn int
 	fmt.Scanf("%d/n", &n)
 

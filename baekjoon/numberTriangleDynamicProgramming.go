@@ -1,6 +1,6 @@
 // https://www.acmicpc.net/problem/1932
 
-package main
+package baekjoon
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func main() {
+func NumberTriangleDynamicPrograming() {
 	triangle := make([][]int, 0)
 	var n int
 	fmt.Scanf("%d\n", &n)
