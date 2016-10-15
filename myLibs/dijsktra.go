@@ -19,7 +19,7 @@ func Dijsktra(graph Graph, start int) (map[int][]int, map[int]int) {
 	distance[start] = 0
 
 	for len(restNode) != 0 {
-		minNode := 9999
+		minNode := -9999
 		minDistance := math.MaxInt16
 
 		for node := range distance {
