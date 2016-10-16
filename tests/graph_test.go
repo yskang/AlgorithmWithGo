@@ -63,13 +63,44 @@ func TestPath(t *testing.T) {
 
 	path, _ := myLibs.Dijsktra(graph, 1)
 
-	fmt.Println(path)
-
 	past := make([]int, 0)
-	multipath := make([][]int, 0)
+	multiPath := make([][]int, 0)
 
-	myLibs.GetMultiPath(path, 1, 6, past, &multipath)
-	fmt.Println(multipath)
+	myLibs.GetMultiPath(path, 1, 6, past, &multiPath)
+	fmt.Println(multiPath)
+}
+
+func TestMultiPath(t *testing.T) {
+	paths := make(map[int][]int)
+
+	paths[1] = []int{}
+	paths[2] = []int{1}
+	paths[3] = []int{1, 2}
+	paths[4] = []int{1}
+	paths[5] = []int{1}
+	paths[6] = []int{3, 4, 5}
+
+	visit := make([]int, 0)
+	DFS(&paths, 6, &visit)
+	fmt.Println(visit)
 
 }
 
+func DFS(path *map[int][]int, v int, discovered *[]int) {
+	*discovered = append(*discovered, v)
+
+	for _, node := range (*path)[v] {
+		if isInSlice(discovered, node) == false {
+			DFS(path, node, discovered)
+		}
+	}
+}
+
+func isInSlice(slice *[]int, elem int) bool {
+	for _, v := range *slice {
+		if elem == v {
+			return true
+		}
+	}
+	return false
+}

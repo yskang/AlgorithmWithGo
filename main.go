@@ -1,9 +1,9 @@
 package main
 
 import (
-	"AlgorithmWithGo/baekjoon"
+	"AlgorithmWithGo/algospot"
 )
 
 func main() {
-	baekjoon.BasicQueue()
+	algospot.WhiteColor()
 }

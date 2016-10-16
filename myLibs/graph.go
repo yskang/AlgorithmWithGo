@@ -21,6 +21,11 @@ func InitGraph() Graph {
 }
 
 func (g *Graph) AddNode(node int) {
+	for _, n := range g.nodes {
+		if n == node {
+			return
+		}
+	}
 	g.nodes = append(g.nodes, node)
 	g.edges[node] = []int{}
 }
