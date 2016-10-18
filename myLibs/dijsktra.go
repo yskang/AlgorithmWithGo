@@ -29,6 +29,10 @@ func Dijsktra(graph Graph, start int) (map[int][]int, map[int]int) {
 			}
 		}
 
+		if minNode < 0 {
+			break
+		}
+
 		restNode = *Remove(minNode, &restNode)
 
 		for _, node := range ((*graph.GetEdges())[minNode]) {
