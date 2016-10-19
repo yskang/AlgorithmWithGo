@@ -5,14 +5,13 @@ import (
 )
 
 func main() {
-	dragonCurve := "FX"
 	getFunc := getCurve()
 
 	for i := 0 ; i < 27 ; i++ {
 		getFunc()
 	}
 
-	dragonCurve = *getFunc()
+	minusInCurve := *getFunc()
 
 	var c int
 	fmt.Scanf("%d\n", &c)
@@ -28,35 +27,62 @@ func main() {
 			case j % 6 == 2:
 				fmt.Print("X")
 			case j % 6 == 3:
-				fmt.Print(string(dragonCurve[j/3-1]))
+				isMinus := false
+				for _, minIndex := range minusInCurve {
+					if minIndex == j {
+						fmt.Print("-")
+						isMinus = true
+						break
+					}
+				}
+				if !isMinus {
+					fmt.Print("+")
+				}
 			case j % 6 == 4:
 				fmt.Print("Y")
 			case j % 6 == 5:
 				fmt.Print("F")
 			case j % 6 == 0:
-				fmt.Print(string(dragonCurve[j/3-1]))
+				isMinus := false
+				for _, minIndex := range minusInCurve {
+					if minIndex == j {
+						fmt.Print("-")
+						isMinus = true
+						break
+					}
+				}
+				if !isMinus {
+					fmt.Print("+")
+				}
 			}
 		}
 		fmt.Print("\n")
 	}
 }
 
-func getCurve() func() *string {
-	s1 := ""
-	s2 := ""
-	curve := "+"
+func getCurve() func() *[]int {
+	minusList := make([]int, 0)
+	length := 5
 
-	return func() *string {
-		s1 = curve
+	return func() *[]int {
+		center := int(length / 2) + 1
 
-		center := int(len(curve) / 2)
-		if curve[center] == '+' {
-			s2 = curve[:center] + "-" + curve[center+1:]
-		} else {
-			s2 = curve[:center] + "+" + curve[center+1:]
+		l := len(minusList)
+		isCenterMinus := false
+		for i := 0 ; i < l ; i++ {
+			if minusList[i] != center {
+				minusList = append(minusList, minusList[i] + length + 1)
+			} else {
+				isCenterMinus = true
+			}
+		}
+		if !isCenterMinus {
+			minusList = append(minusList, center + length + 1)
 		}
 
-		curve = s1 + "+" + s2
-		return &curve
+
+		length = length * 2 + 1
+
+		return &minusList
 	}
 }
