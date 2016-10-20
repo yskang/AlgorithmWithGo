@@ -5,14 +5,6 @@ import (
 )
 
 func main() {
-	getFunc := getCurve()
-
-	for i := 0 ; i < 27 ; i++ {
-		getFunc()
-	}
-
-	minusInCurve := *getFunc()
-
 	var c int
 	fmt.Scanf("%d\n", &c)
 
@@ -27,62 +19,46 @@ func main() {
 			case j % 6 == 2:
 				fmt.Print("X")
 			case j % 6 == 3:
-				isMinus := false
-				for _, minIndex := range minusInCurve {
-					if minIndex == j {
-						fmt.Print("-")
-						isMinus = true
-						break
-					}
-				}
-				if !isMinus {
-					fmt.Print("+")
-				}
+				fmt.Print(getSymbol(j, n))
 			case j % 6 == 4:
 				fmt.Print("Y")
 			case j % 6 == 5:
 				fmt.Print("F")
 			case j % 6 == 0:
-				isMinus := false
-				for _, minIndex := range minusInCurve {
-					if minIndex == j {
-						fmt.Print("-")
-						isMinus = true
-						break
-					}
-				}
-				if !isMinus {
-					fmt.Print("+")
-				}
+				fmt.Print(getSymbol(j, n))
 			}
 		}
 		fmt.Print("\n")
 	}
 }
 
-func getCurve() func() *[]int {
-	minusList := make([]int, 0)
-	length := 5
-
-	return func() *[]int {
-		center := int(length / 2) + 1
-
-		l := len(minusList)
-		isCenterMinus := false
-		for i := 0 ; i < l ; i++ {
-			if minusList[i] != center {
-				minusList = append(minusList, minusList[i] + length + 1)
-			} else {
-				isCenterMinus = true
-			}
-		}
-		if !isCenterMinus {
-			minusList = append(minusList, center + length + 1)
-		}
-
-
-		length = length * 2 + 1
-
-		return &minusList
+func getSymbol(index int, nThGen int) string {
+	if nThGen == 1 {
+		return "+"
 	}
+
+	length := 2
+
+	for i := 0 ; i < nThGen ; i++ {
+		length = length * 2 + 1
+	}
+
+	symbol := ""
+	indexParent := index % ((length + 1) / 2)
+	if indexParent == 0 {
+		symbol = "+"
+	} else if indexParent == (length + 1) / 4 && index > ((length + 1) / 2) {
+		symbol = reverse(getSymbol(indexParent, nThGen - 1))
+	} else {
+		symbol = getSymbol(indexParent, nThGen - 1)
+	}
+
+	return symbol
+}
+
+func reverse(symbol string) string {
+	if symbol == "+" {
+		return "-"
+	}
+	return "+"
 }
