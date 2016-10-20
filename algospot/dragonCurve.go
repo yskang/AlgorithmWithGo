@@ -1,12 +1,12 @@
 //https://algospot.com/judge/problem/read/DRAGON
 
-package main
+package algospot
 
 import (
 	"fmt"
 )
 
-func main() {
+func DragonCurve() {
 	var c int
 	fmt.Scanf("%d\n", &c)
 

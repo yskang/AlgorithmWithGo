@@ -1,12 +1,12 @@
 // https://algospot.com/judge/problem/read/HAMMINGCODE
 
-package main
+package algospot
 
 import (
 	"fmt"
 )
 
-func main() {
+func HammingCode() {
 	var numOfTest int
 	fmt.Scanf("%d\n", &numOfTest)
 

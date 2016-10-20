@@ -1,6 +1,6 @@
 // https://algospot.com/judge/problem/read/WHITECOLLAR
 
-package main
+package algospot
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"os"
 )
 
-func main() {
+func WhiteCollar() {
 	var numTest int
 	scanner := bufio.NewScanner(os.Stdin)
 	var in string
