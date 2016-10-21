@@ -11,6 +11,8 @@ import (
 	"strconv"
 )
 
+var count, cacheCount int
+
 func main() {
 	var T int
 	fmt.Scanf("%d\n", &T)
@@ -28,9 +30,8 @@ func main() {
 		M, _ := strconv.Atoi(inStrs[1])
 		S, _ := strconv.Atoi(inStrs[2])
 
-
 		graph := InitGraph(N)
-		memo := MyCache{ make(map[Ctag]int) }
+		cache := make([][101]int, N + 1)
 
 		for m := 0 ; m < M ; m++ {
 			var inStr2 string
@@ -56,11 +57,11 @@ func main() {
 		for node := 1 ; node <= N ; node++ {
 			var excitingValue int
 
-			if val, ok := memo.cache[Ctag{node,S}]; ok {
-				excitingValue = val
+			if cache[node][S] != 0 {
+				excitingValue = cache[node][S]
 			} else {
-				excitingValue = getMaxExcitingValueAt(memo, graph, node, S)
-				memo.cache[Ctag{node, S}] = excitingValue
+				excitingValue = getMaxExcitingValueAt(&cache, graph, node, S)
+				cache[node][S] = excitingValue
 			}
 
 
@@ -69,20 +70,23 @@ func main() {
 			}
 
 		}
+		fmt.Println("call count", count)
+		fmt.Println("cache hit count",cacheCount)
 		fmt.Println(maxExcitingValue)
 	}
 
 }
 
-func getMaxExcitingValueAt(memo MyCache, graph Graph, node int, depth int) int {
+func getMaxExcitingValueAt(cache *[][101]int, graph Graph, node int, depth int) int {
+	count += 1
 	if len((*graph.GetEdges())[node]) == 0 {
-		memo.cache[Ctag{node, depth}] = 0
 		return 0
 	}
 
 	if depth == 1 {
-		if val, ok := memo.cache[Ctag{node, depth}]; ok {
-			return val
+		if (*cache)[node][depth] != 0 {
+			count -= 1
+			return (*cache)[node][depth]
 		} else {
 			maxExcitingValue := math.MinInt16
 			for _, value := range (*graph.GetEdges())[node] {
@@ -90,7 +94,7 @@ func getMaxExcitingValueAt(memo MyCache, graph Graph, node int, depth int) int {
 					maxExcitingValue = (*graph.GetDistances())[Edge{node, value}]
 				}
 			}
-			memo.cache[Ctag{node, depth}] = maxExcitingValue
+			(*cache)[node][depth] = maxExcitingValue
 			return maxExcitingValue
 		}
 	}
@@ -101,10 +105,12 @@ func getMaxExcitingValueAt(memo MyCache, graph Graph, node int, depth int) int {
 	for _, prevNode := range (*graph.GetEdges())[node]{
 		var excitingValue int
 		candidates := make([]int, 0)
-		if val, ok := memo.cache[Ctag{prevNode, depth-1}] ; ok {
-			excitingValue = val
+		if (*cache)[prevNode][depth-1] != 0 {
+			//fmt.Println("hit!")
+			cacheCount += 1
+			excitingValue = (*cache)[prevNode][depth-1]
 		} else {
-			excitingValue = getMaxExcitingValueAt(memo, graph, prevNode, depth -1)
+			excitingValue = getMaxExcitingValueAt(cache, graph, prevNode, depth -1)
 		}
 		if excitingValue > maxExcitingValue {
 			maxExcitingValue = excitingValue
@@ -122,15 +128,6 @@ func getMaxExcitingValueAt(memo MyCache, graph Graph, node int, depth int) int {
 		return 0
 	}
 	return excitingValue
-}
-
-type Ctag struct {
-	node int
-	depth int
-}
-
-type MyCache struct {
-	cache map[Ctag]int
 }
 
 type Edge struct {
