@@ -43,47 +43,56 @@ func main() {
 			B, _ := strconv.Atoi(inStrs2[1])
 			C, _ := strconv.Atoi(inStrs2[2])
 
-
-			if A < B {
-				graph.AddEdge(B, A, C)
-			} else {
-				graph.AddEdge(A, B, C)
+			if C >= 0 {
+				if A < B {
+					graph.AddEdge(B, A, C)
+				} else {
+					graph.AddEdge(A, B, C)
+				}
 			}
 		}
 
 		maxExcitingValue := math.MinInt16
 		for node := 1 ; node <= N ; node++ {
-			for i := 1 ; i <= S ; i++ {
-				var excitingValue int
+			var excitingValue int
 
-				if val, ok := memo.cache[Ctag{node,i}]; ok {
-					excitingValue = val
-				} else {
-					excitingValue = getMaxExcitingValueAt(memo, graph, node, i)
-					memo.cache[Ctag{node, i}] = excitingValue
-				}
-
-
-				if maxExcitingValue < excitingValue {
-					maxExcitingValue = excitingValue
-				}
+			if val, ok := memo.cache[Ctag{node,S}]; ok {
+				excitingValue = val
+			} else {
+				excitingValue = getMaxExcitingValueAt(memo, graph, node, S)
+				memo.cache[Ctag{node, S}] = excitingValue
 			}
-		}
 
+
+			if maxExcitingValue < excitingValue {
+				maxExcitingValue = excitingValue
+			}
+
+		}
 		fmt.Println(maxExcitingValue)
 	}
 
 }
 
 func getMaxExcitingValueAt(memo MyCache, graph Graph, node int, depth int) int {
+	if len((*graph.GetEdges())[node]) == 0 {
+		memo.cache[Ctag{node, depth}] = 0
+		return 0
+	}
+
 	if depth == 1 {
-		maxExcitingValue := math.MinInt16
-		for _, value := range (*graph.GetEdges())[node] {
-			if maxExcitingValue < (*graph.GetDistances())[Edge{node, value}] {
-				maxExcitingValue = (*graph.GetDistances())[Edge{node, value}]
+		if val, ok := memo.cache[Ctag{node, depth}]; ok {
+			return val
+		} else {
+			maxExcitingValue := math.MinInt16
+			for _, value := range (*graph.GetEdges())[node] {
+				if maxExcitingValue < (*graph.GetDistances())[Edge{node, value}] {
+					maxExcitingValue = (*graph.GetDistances())[Edge{node, value}]
+				}
 			}
+			memo.cache[Ctag{node, depth}] = maxExcitingValue
+			return maxExcitingValue
 		}
-		return maxExcitingValue
 	}
 
 	maxExcitingValue := math.MinInt16
@@ -91,6 +100,7 @@ func getMaxExcitingValueAt(memo MyCache, graph Graph, node int, depth int) int {
 
 	for _, prevNode := range (*graph.GetEdges())[node]{
 		var excitingValue int
+		candidates := make([]int, 0)
 		if val, ok := memo.cache[Ctag{prevNode, depth-1}] ; ok {
 			excitingValue = val
 		} else {
@@ -99,6 +109,11 @@ func getMaxExcitingValueAt(memo MyCache, graph Graph, node int, depth int) int {
 		if excitingValue > maxExcitingValue {
 			maxExcitingValue = excitingValue
 			maxNode = prevNode
+			candidates = candidates[:0]
+		} else if excitingValue == maxExcitingValue {
+			if (*graph.GetDistances())[Edge{node, prevNode}] > (*graph.GetDistances())[Edge{node, maxNode}] {
+				maxNode = prevNode
+			}
 		}
 	}
 
