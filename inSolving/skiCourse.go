@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-var count, cacheCount int
+//var count, cacheCount int
 
 func main() {
 	var T int
@@ -67,12 +67,12 @@ func main() {
 			}
 
 		}
-		fmt.Println("call count", count)
+		//fmt.Println("call count", count)
 
-		fmt.Println("cache hit count",cacheCount)
-		fmt.Println(cache)
-		count = 0
-		cacheCount = 0
+		//fmt.Println("cache hit count",cacheCount)
+		//fmt.Println(cache)
+		//count = 0
+		//cacheCount = 0
 		fmt.Println(maxExcitingValue)
 	}
 
@@ -80,11 +80,11 @@ func main() {
 
 func getMaxExcitingValueAt(cache *[][]int, graph *[][]int, node int, depth int) int {
 	if (*cache)[node][depth] != 0 {
-		cacheCount += 1
+		//cacheCount += 1
 		return (*cache)[node][depth]
 	}
 
-	count += 1
+	//count += 1
 
 	if depth == 1 {
 		maxExcitingValue := math.MinInt16
@@ -127,5 +127,7 @@ func getMaxExcitingValueAt(cache *[][]int, graph *[][]int, node int, depth int) 
 	if excitingValue <= 0 {
 		return 0
 	}
+
+	(*cache)[node][depth] = excitingValue
 	return excitingValue
 }
