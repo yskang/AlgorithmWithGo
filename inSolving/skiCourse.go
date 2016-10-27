@@ -11,15 +11,19 @@ import (
 	"math"
 )
 
+var callCount, hitCount int
+var MAX int32
+
 func main() {
-
-
 	var T int
 	fmt.Scanf("%d\n", &T)
 
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for t := 0 ; t < T ; t++ {
+		callCount, hitCount = 0, 0
+
+		MAX = math.MinInt32
 
 		var inStr string
 		for scanner.Scan() {
@@ -46,7 +50,11 @@ func main() {
 
 		cache := make([][]int32, 0)
 		for i := uint16(0) ; i < N ; i++ {
-			cache = append(cache, make([]int32, S))
+			row := make([]int32, 0)
+			for j := uint8(0) ; j < S ; j++ {
+				row = append(row, math.MinInt32)
+			}
+			cache = append(cache, row)
 		}
 
 		for m := uint32(0) ; m < M ; m++ {
@@ -65,25 +73,50 @@ func main() {
 		maxExcitingValue := int32(math.MinInt32)
 		var excitingValue int32
 
-		for slope := uint8(1) ; slope <= S ; slope++ {
-			for node := uint16(0) ; node < N ; node++ {
+		for node := uint16(0) ; node < N ; node++ {
 
-				excitingValue = getMaxExcitingValueAt(&cache, &graph, node, slope)
+			excitingValue = getMaxExcitingValueAt(&cache, &graph, node, S)
 
-				cache[node][slope-1] = excitingValue
+			cache[node][S-1] = excitingValue
 
-				if maxExcitingValue < excitingValue {
-					maxExcitingValue = excitingValue
-				}
+			if MAX < excitingValue {
+				MAX = excitingValue
+			}
 
+			if maxExcitingValue < excitingValue {
+				maxExcitingValue = excitingValue
+			}
+
+		}
+
+		for s := uint8(1) ; s < S ; s++ {
+			excitingValue = getMaxExcitingValueAt(&cache, &graph, N-1, s)
+
+			cache[N-1][s-1] = excitingValue
+
+			if MAX < excitingValue {
+				MAX = excitingValue
+			}
+
+			if maxExcitingValue < excitingValue {
+				maxExcitingValue = excitingValue
 			}
 		}
 
+
+		fmt.Println("call count:", callCount)
+		fmt.Println("hit count:", hitCount)
+		for i := uint16(0) ; i < N ; i++ {
+			fmt.Println(cache[i])
+		}
 		fmt.Println(maxExcitingValue)
+		fmt.Println(MAX)
 	}
 }
 
 func getMaxExcitingValueAt(cache *[][]int32, graph *[]map[uint16]int32, node uint16, depth uint8) int32 {
+	callCount += 1
+
 	maxExcitingValue := int32(math.MinInt32)
 	excitingValue := int32(0)
 
@@ -95,7 +128,8 @@ func getMaxExcitingValueAt(cache *[][]int32, graph *[]map[uint16]int32, node uin
 		if depth == 1 {
 			excitingValue = (*graph)[node][prevNode]
 		} else {
-			if (*cache)[prevNode][depth-2] != 0 {
+			if (*cache)[prevNode][depth-2] != math.MinInt32 {
+				hitCount += 1
 				excitingValue = (*cache)[prevNode][depth-2] + (*graph)[node][prevNode]
 			} else {
 				excitingValue = getMaxExcitingValueAt(cache, graph, prevNode, depth-1) + (*graph)[node][prevNode]
@@ -107,5 +141,10 @@ func getMaxExcitingValueAt(cache *[][]int32, graph *[]map[uint16]int32, node uin
 	}
 
 	(*cache)[node][depth-1] = maxExcitingValue
+
+	if MAX < maxExcitingValue {
+		MAX = maxExcitingValue
+	}
+
 	return maxExcitingValue
 }
