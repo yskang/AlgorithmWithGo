@@ -67,8 +67,17 @@ func main() {
 			A, _ := strconv.Atoi(inLine2[0])
 			B, _ := strconv.Atoi(inLine2[1])
 			C, _ := strconv.Atoi(inLine2[2])
-			graph[B-1][uint16(A-1)] = int32(C)
+
+			if val, ok := graph[B-1][uint16((A-1))]; ok {
+				if int32(C) > val {
+					graph[B-1][uint16(A-1)] = int32(C)
+				}
+			} else {
+				graph[B-1][uint16(A-1)] = int32(C)
+			}
 		}
+
+		fmt.Println(graph)
 
 		maxExcitingValue := int32(math.MinInt32)
 		var excitingValue int32
@@ -103,13 +112,6 @@ func main() {
 			}
 		}
 
-
-		fmt.Println("call count:", callCount)
-		fmt.Println("hit count:", hitCount)
-		for i := uint16(0) ; i < N ; i++ {
-			fmt.Println(cache[i])
-		}
-		fmt.Println(maxExcitingValue)
 		fmt.Println(MAX)
 	}
 }
