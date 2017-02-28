@@ -19,10 +19,10 @@ func main() {
 
 func convertToTitle(n int) string {
 	title := ""
-	for ; n != 0;{
-		char := 'A' + (n - 1) % 26
+	for n != 0 {
+		digit := 'A' + (n - 1) % 26
+		title = string(digit) + title
 		n = (n - 1) / 26
-		title = string(char) + title
 	}
 
 	return title
