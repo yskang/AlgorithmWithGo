@@ -1,11 +1,23 @@
 package leetcode
 
-import "fmt"
+import (
+	"math"
+)
 
-func FindAllDuplicatInArray() {
-	fmt.Println(findDuplicates([]int{1,2,3,4,5}))
+func FindAllDuplicatInArray(nums []int) []int {
+	return findDuplicates(nums)
 }
 
 func findDuplicates(nums []int) []int {
-	return []int{0}
+	result := make([]int, 0)
+
+	for _, num := range(nums) {
+		if nums[int(math.Abs(float64(num))-1)] < 0 {
+			result = append(result, int(math.Abs(float64(num))))
+		} else {
+			nums[int(math.Abs(float64(num))-1)] *= -1
+		}
+	}
+
+	return result
 }

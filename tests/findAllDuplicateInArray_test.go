@@ -1,7 +1,9 @@
 package tests
 
 import (
+	"../leetcode"
 	"testing"
+	"fmt"
 )
 
 func TestList(t *testing.T) {
@@ -11,12 +13,29 @@ func TestList(t *testing.T) {
 	addToList(&myList, 100)
 
 	if len(myList) == 0 {
-		t.Error("list is empty")
+		t.Error("The list is not updated!")
 	} else {
-		t.Log(myList)
+		fmt.Println(myList)
 	}
 }
 
 func addToList(list *[]int, num int) {
 	*list = append(*list, num)
+}
+
+func TestDuplicateInArray(t *testing.T) {
+	result := leetcode.FindAllDuplicatInArray([]int{4,3,2,7,8,2,3,1})
+	answer := []int{2,3}
+
+	if len(result) != len(answer) {
+		t.Error("Wrong! Size is different,", result)
+		return
+	}
+
+	for i, r := range result {
+		if r != answer[i] {
+			t.Error("Wrong!", result)
+			return
+		}
+	}
 }
