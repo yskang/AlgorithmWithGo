@@ -11,43 +11,28 @@ import "fmt"
  * }
  */
 func largestValues(root *TreeNode) []int {
-	treeNote := make([]int, 0)
-	depth := 0
+	nodes := make([]int, 0)
 
-	treeNote = append(treeNote, root.Val)
+	addNode(root, 0, &nodes)
 
-	getChildren(root.Left, depth+1, treeNote)
-	getChildren(root.Right, depth+1, treeNote)
-
-	fmt.Println(treeNote)
-
-	return treeNote
+	return nodes
 }
 
-func getChildren(root *TreeNode, depth int, treeNote []int) {
-	if len(treeNote) <= depth {
-		fmt.Println("append", treeNote, "to", root.Val)
-		treeNote = append(treeNote, root.Val)
-		fmt.Println(treeNote)
-	} else if treeNote[depth] < root.Val {
-		fmt.Println("update")
-		treeNote[depth] = root.Val
+func addNode(root *TreeNode, depth int, nodes *[]int) {
+	if root == nil {
+		return
+	}
+
+	if len(*nodes) == 0 || len(*nodes) <= depth {
+		*nodes = append(*nodes, root.Val)
+	} else if (*nodes)[depth] < root.Val {
+		(*nodes)[depth] = root.Val
 	}
 
 	if root.Left == nil && root.Right == nil {
 		return
 	}
 
-	if root.Left != nil && root.Right == nil {
-		getChildren(root.Left, depth+1, treeNote)
-		return
-	}
-
-	if root.Left == nil && root.Right != nil {
-		getChildren(root.Right, depth+1, treeNote)
-		return
-	}
-
-	getChildren(root.Left, depth+1, treeNote)
-	getChildren(root.Right, depth+1, treeNote)
+	addNode(root.Left, depth+1, nodes)
+	addNode(root.Right, depth+1, nodes)
 }
