@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func StrStr() {
 	fmt.Println(strStr("a", ""))
 }
 

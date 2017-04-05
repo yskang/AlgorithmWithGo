@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func BeautifulArrangement2() {
 	fmt.Println(countArrangement2(5))
 }
 

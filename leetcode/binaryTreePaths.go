@@ -1,13 +1,8 @@
-package main
+package leetcode
 
 import (
-	"fmt"
 	"strconv"
 )
-
-func main() {
-	fmt.Println(binaryTreePaths(root))
-}
 
 func binaryTreePaths(root *TreeNode) []string {
 	if root == nil {

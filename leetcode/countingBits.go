@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"sort"
 )
 
-func main() {
+func CountBits() {
 	a := []string{"11110", "11111", "10111"}
 	sort.Strings(a)
 	fmt.Println(a)

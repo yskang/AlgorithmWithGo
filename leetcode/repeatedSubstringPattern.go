@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func repeatedSubstringPatternMain() {
+func RepeatedSubstringPattern() {
 	fmt.Println(repeatedSubstringPattern("abab"))
 }
 

@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func FindAnagrams() {
 	fmt.Println(findAnagrams("cbaebabacd", "abc"))
 }
 func findAnagrams(s string, p string) []int {

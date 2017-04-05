@@ -1,4 +1,4 @@
-package main
+package leetcode
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-func main() {
+func SymmetricTree() {
 	root := newTree()
 	fmt.Println(isSymmetric(root))
 }

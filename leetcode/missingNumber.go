@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"sort"
 )
 
-func main() {
+func MissingNumber() {
 	fmt.Println(missingNumber([]int{0,1,2,3,4,6,7,8,9}))
 }
 

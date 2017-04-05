@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"strings"
 )
 
-func main() {
+func LengthOfLastWord() {
 	fmt.Println(lengthOfLastWord("Hello World  "))
 }
 

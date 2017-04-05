@@ -5,7 +5,7 @@ import (
 	"AlgorithmWithGo/myLibs"
 )
 
-func main() {
+func PalindromeLinkedList() {
 	head := myLibs.InitListNode([]int{})
 	fmt.Println(isPalindrome(head))
 }

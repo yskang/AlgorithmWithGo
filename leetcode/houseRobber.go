@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func test() {
+func HouseRobber() {
 	fmt.Println(rob([]int{}))
 	fmt.Println(rob([]int{1}))
 	fmt.Println(rob([]int{1,2}))

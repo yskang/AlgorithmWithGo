@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func MergeSortedArray() {
 	merge([]int{1,2,3,4,5,9}, 5, []int{2,5,7,8}, 4)
 }
 

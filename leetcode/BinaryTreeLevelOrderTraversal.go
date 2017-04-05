@@ -1,4 +1,4 @@
-package main
+package leetcode
 
 func levelOrder(root *TreeNode) [][]int {
 	if root == nil {
@@ -9,11 +9,11 @@ func levelOrder(root *TreeNode) [][]int {
 		return [][]int{[]int{root.Val}}
 	}
 
-	return append([][]int{[]int{root.Val}}, merge(levelOrder(root.Left), levelOrder(root.Right))...)
+	return append([][]int{[]int{root.Val}}, myMerge(levelOrder(root.Left), levelOrder(root.Right))...)
 }
 
 
-func merge(a [][]int, b [][]int)[][]int {
+func myMerge(a [][]int, b [][]int)[][]int {
 	lenA := len(a)
 	lenB := len(b)
 

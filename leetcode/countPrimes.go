@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"math"
 )
 
-func main() {
+func CountPrimes() {
 	fmt.Println(countPrimes(50))
 	fmt.Println(countPrimes(100))
 	fmt.Println(countPrimes(500))

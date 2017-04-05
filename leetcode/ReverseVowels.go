@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func test() {
+func ReverseVowels() {
 	fmt.Println(reverseVowels("Hello World"))
 	fmt.Println(reverseVowels("aA"))
 }

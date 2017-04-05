@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func ConvertToTitle() {
 	fmt.Println(convertToTitle(1))
 	fmt.Println(convertToTitle(26))
 	fmt.Println(convertToTitle(27))

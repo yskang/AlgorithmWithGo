@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func LongestCommonPrefix() {
 	fmt.Println(longestCommonPrefix([]string{"aa", "a"}))
 	fmt.Println(longestCommonPrefix([]string{}))
 }

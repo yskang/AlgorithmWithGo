@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func PascalsTriangle2() {
 	fmt.Println(getRow(10))
 }
 

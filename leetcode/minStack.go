@@ -1,12 +1,12 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"math"
 )
 
-func main() {
-	stack := Constructor()
+func TestMinStack() {
+	stack := NewMinStack()
 	stack.Push(10)
 	stack.Push(11)
 	stack.Push(12)
@@ -20,7 +20,7 @@ type MinStack struct {
 }
 
 /** initialize your data structure here. */
-func Constructor() MinStack {
+func NewMinStack() MinStack {
 	data := make([]int, 0)
 	return MinStack{data}
 }

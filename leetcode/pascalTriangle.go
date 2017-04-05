@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func PascalTriangle() {
 	fmt.Println(generate(1))
 }
 

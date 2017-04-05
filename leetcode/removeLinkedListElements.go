@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"AlgorithmWithGo/myLibs"
 	"fmt"
 )
 
-func main() {
+func RemoveLinkedListElements() {
 	head := myLibs.InitListNode([]int{1,1})
 	head = removeElements(head, 1)
 

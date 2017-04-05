@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"math"
 )
 
-func main() {
+func ReverseInteger() {
 	fmt.Println(reverse(-12345))
 }
 

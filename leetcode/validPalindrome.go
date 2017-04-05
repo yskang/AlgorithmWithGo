@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"strings"
 )
 
-func main() {
+func ValidPalindrome() {
 	fmt.Println(isPalindrome("A man, a plan, a canal: Panama"))
 	fmt.Println(isPalindrome("race a car"))
 }

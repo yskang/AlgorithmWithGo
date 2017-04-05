@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func ContainNearbyDuplicate() {
 	fmt.Println(containsNearbyDuplicate([]int{99, 99}, 2))
 }
 

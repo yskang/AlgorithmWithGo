@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func ArithmeticsSlices() {
 	fmt.Println(numberOfArithmeticSlices([]int{1,2,3,4,5,6}))
 	fmt.Println(numberOfArithmeticSlices([]int{}))
 	fmt.Println(numberOfArithmeticSlices([]int{1,2}))

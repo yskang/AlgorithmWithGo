@@ -1,4 +1,4 @@
-package main
+package leetcode
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func main() {
+func ComplexNumberMultiply() {
 	fmt.Printf(complexNumberMultiply("1+1i", "1+1i"))
 }
 

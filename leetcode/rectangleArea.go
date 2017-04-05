@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"math"
 )
 
-func main() {
+func RectangleArea() {
 	fmt.Println(computeArea(-2, -2, 2, 2, -2, -2, 2, 2))
 }
 

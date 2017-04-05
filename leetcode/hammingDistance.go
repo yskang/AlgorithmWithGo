@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func HammingDistance() {
 	fmt.Println(hammingDistance(1, 15))
 }
 

@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"strconv"
 )
 
-func main() {
+func CountAndSay() {
 	fmt.Println(countAndSay(5))
 }
 

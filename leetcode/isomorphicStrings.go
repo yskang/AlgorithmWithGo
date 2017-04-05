@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func IsomorphicStrings() {
 	fmt.Println(isIsomorphic("egg", "add"))
 }
 

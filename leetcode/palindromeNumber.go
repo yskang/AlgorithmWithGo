@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 	"math"
 )
 
-func main() {
+func PalindromeNumber() {
 	fmt.Println(isPalindrome(123454321))
 }
 

@@ -1,4 +1,4 @@
-package main
+package leetcode
 
 func hasPathSum(root *TreeNode, sum int) bool {
 

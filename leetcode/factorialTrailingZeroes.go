@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func TrailingZeroes() {
 	fmt.Println(trailingZeroes(300))
 }
 

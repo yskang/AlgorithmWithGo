@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func BattleShipsInABoard() {
 	fmt.Println(countBattleships([][]byte{{'X','.','.','X'},
 		{'.','.','.','X'},
 		{'.','.','.','X'}}))

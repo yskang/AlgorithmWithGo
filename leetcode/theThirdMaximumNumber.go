@@ -1,11 +1,11 @@
-package main
+package leetcode
 
 import (
 	"sort"
 	"fmt"
 )
 
-func main() {
+func ThirdMax() {
 	fmt.Println(thirdMax([]int{2,2,3,1}))
 }
 

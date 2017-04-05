@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func PlusOne() {
 	fmt.Println(plusOne([]int{1,9}))
 	fmt.Println(plusOne([]int{2,0}))
 	fmt.Println(plusOne([]int{9,9}))

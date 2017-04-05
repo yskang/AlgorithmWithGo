@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func SumRange() {
 	nums := []int{-2, 0, 3, -5, 2, -1}
 	arr := Constructor(nums)
 	fmt.Println(arr.SumRange(0,2));

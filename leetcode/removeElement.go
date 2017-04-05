@@ -1,10 +1,10 @@
-package main
+package leetcode
 
 import (
 	"fmt"
 )
 
-func main() {
+func RemoveElement() {
 	input := []int{2, 1, 1, 2, 1, 1}
 	size := removeElement(input, 1)
 	fmt.Println(input, size)

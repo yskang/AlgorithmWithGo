@@ -1,7 +1,5 @@
-package main
+package leetcode
 
-func main() {
-}
 
 func isSymmetric(root *TreeNode) bool {
 	if root == nil {

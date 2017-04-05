@@ -1,8 +1,8 @@
-package main
+package leetcode
 
 import "fmt"
 
-func main() {
+func RemoveDuplicates() {
 	x := []int{1,1,2,2,2,2}
 	l := removeDuplicates(x)
 	fmt.Println(x)
