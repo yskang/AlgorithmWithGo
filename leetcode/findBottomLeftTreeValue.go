@@ -2,12 +2,6 @@ package leetcode
 
 import "sort"
 
-type TreeNode struct {
-Val int
-Left *TreeNode
-Right *TreeNode
-}
-
 func findBottomLeftValue(root *TreeNode) int {
 	treeMark := make(map[string]int)
 	markElements(root, treeMark, "1")

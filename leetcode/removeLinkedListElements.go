@@ -1,7 +1,7 @@
 package leetcode
 
 import (
-	"AlgorithmWithGo/myLibs"
+	"../myLibs"
 	"fmt"
 )
 

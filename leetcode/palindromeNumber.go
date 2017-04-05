@@ -6,10 +6,10 @@ import (
 )
 
 func PalindromeNumber() {
-	fmt.Println(isPalindrome(123454321))
+	fmt.Println(isPalindrome3(123454321))
 }
 
-func isPalindrome(x int) bool {
+func isPalindrome3(x int) bool {
 
 
 	i := 10

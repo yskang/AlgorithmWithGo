@@ -4,10 +4,10 @@ import "fmt"
 
 func RemoveElement2() {
 	input := []int{1,2,3,4,5,4}
-	size := removeElement(input, 4)
+	size := removeElement2(input, 4)
 	fmt.Println(input, size)
 }
-func removeElement(nums []int, val int) int {
+func removeElement2(nums []int, val int) int {
 	count := 0
 
 	for index := 0 ; index < len(nums) ;  {

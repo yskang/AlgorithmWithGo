@@ -1,9 +1,9 @@
 package main
 
 import (
-	"AlgorithmWithGo/algospot"
+	"./leetcode"
 )
 
 func main() {
-	algospot.WhiteColor()
+	leetcode.FindAllDuplicatInArray()
 }

@@ -2,7 +2,7 @@ package tests
 
 import (
 	"testing"
-	"AlgorithmWithGo/myLibs"
+	"../myLibs"
 	"fmt"
 )
 

@@ -1,18 +1,18 @@
 package leetcode
 
 import (
-	"AlgorithmWithGo/myLibs"
+	"../myLibs"
 )
 
-func swapPairs(head *ListNode) *ListNode {
+func swapPairs(head *myLibs.ListNode) *myLibs.ListNode {
 	if head == nil || head.Next == nil {
 		return head
 	}
 
-	dummyHead := new(ListNode)
-	first := new(ListNode)
-	second := new(ListNode)
-	temp := new(ListNode)
+	dummyHead := new(myLibs.ListNode)
+	first := new(myLibs.ListNode)
+	second := new(myLibs.ListNode)
+	temp := new(myLibs.ListNode)
 
 	dummyHead.Next = head
 

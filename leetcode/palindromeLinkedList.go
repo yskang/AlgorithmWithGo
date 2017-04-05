@@ -1,16 +1,16 @@
-package main
+package leetcode
 
 import (
 	"fmt"
-	"AlgorithmWithGo/myLibs"
+	"../myLibs"
 )
 
 func PalindromeLinkedList() {
 	head := myLibs.InitListNode([]int{})
-	fmt.Println(isPalindrome(head))
+	fmt.Println(isPalindrome2(head))
 }
 
-func isPalindrome(head *myLibs.ListNode) bool {
+func isPalindrome2(head *myLibs.ListNode) bool {
 	if head == nil {
 		return true
 	}

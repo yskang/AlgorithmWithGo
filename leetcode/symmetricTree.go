@@ -1,20 +1,8 @@
 package leetcode
 
 import (
-	"fmt"
 	"strconv"
 )
-
-type TreeNode struct {
-	Val int
-	Left *TreeNode
-	Right *TreeNode
-}
-
-func SymmetricTree() {
-	root := newTree()
-	fmt.Println(isSymmetric(root))
-}
 
 func isSymmetric(root *TreeNode) bool {
 	if root == nil {

@@ -3,7 +3,7 @@ package leetcode
 import "fmt"
 
 func ArrangeCoin() {
-	fmt.Println(arrangeCoins())
+	fmt.Println(arrangeCoins(1))
 }
 
 func arrangeCoins(n int) int {
