@@ -5,7 +5,7 @@ import (
 )
 
 func BeautifulArrangement() {
-	fmt.Println(countArrangement(6))
+	fmt.Println(countArrangement(5))
 }
 
 func countArrangement(N int) int {

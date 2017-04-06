@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	leetcode.FindAllDuplicatInArray()
+	leetcode.BeautifulArrangement()
 }
