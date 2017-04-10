@@ -57,3 +57,17 @@ func MakeTreeNode(inputString string) *TreeNode {
 
 	return root
 }
+
+func CompareTreeNode(nodeA *TreeNode, nodeB *TreeNode) bool {
+	if nodeA == nil && nodeB == nil {
+		return true
+	} else if nodeA == nil || nodeB == nil {
+		return false
+	}
+
+	if nodeA.Val == nodeB.Val {
+		return CompareTreeNode(nodeA.Left, nodeB.Left) && CompareTreeNode(nodeA.Right, nodeB.Right)
+	}
+
+	return false
+}

@@ -30,3 +30,18 @@ func getNodes(node *myLibs.TreeNode, treeMap map[int][]int, depth int) {
 	getNodes(node.Right, treeMap, depth+1)
 }
 
+func TestCompareTreeNode(t *testing.T) {
+	a := myLibs.MakeTreeNode("1,2,3,4,5")
+	b := myLibs.MakeTreeNode("1,2,3,4,5")
+
+	if !myLibs.CompareTreeNode(a, b) {
+		t.Error("compair Error!!")
+	}
+
+	c := myLibs.MakeTreeNode("1,2,3,4,5,6")
+
+	if myLibs.CompareTreeNode(a, c) {
+		t.Error("compair Error!!")
+	}
+}
+
