@@ -2,7 +2,7 @@ package leetcode
 
 import (
 	"fmt"
-	"../myLibs"
+	"AlgorithmWithGo/myLibs"
 )
 
 func PalindromeLinkedList() {

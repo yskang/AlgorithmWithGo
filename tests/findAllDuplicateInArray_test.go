@@ -1,9 +1,9 @@
 package tests
 
 import (
-	"../leetcode"
 	"testing"
 	"fmt"
+	"AlgorithmWithGo/leetcode"
 )
 
 func TestList(t *testing.T) {

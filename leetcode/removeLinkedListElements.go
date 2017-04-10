@@ -1,8 +1,8 @@
 package leetcode
 
 import (
-	"../myLibs"
 	"fmt"
+	"AlgorithmWithGo/myLibs"
 )
 
 func RemoveLinkedListElements() {

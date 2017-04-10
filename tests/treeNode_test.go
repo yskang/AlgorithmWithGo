@@ -2,8 +2,8 @@ package tests
 
 import (
 	"testing"
-	"../myLibs"
 	"fmt"
+	"AlgorithmWithGo/myLibs"
 )
 
 func TestEmptyTreeNode(t *testing.T) {

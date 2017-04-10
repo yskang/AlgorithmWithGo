@@ -1,8 +1,6 @@
 package leetcode
 
-import (
-	"../myLibs"
-)
+import "AlgorithmWithGo/myLibs"
 
 func swapPairs(head *myLibs.ListNode) *myLibs.ListNode {
 	if head == nil || head.Next == nil {

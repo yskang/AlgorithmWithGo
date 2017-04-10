@@ -2,7 +2,7 @@ package tests
 
 import (
 	"testing"
-	"../myLibs"
+	"AlgorithmWithGo/myLibs"
 )
 
 func TestFloyd(t *testing.T) {

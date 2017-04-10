@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 	"fmt"
-	"../myLibs"
+	"AlgorithmWithGo/myLibs"
 )
 
 func TestBigAdd(t *testing.T) {
