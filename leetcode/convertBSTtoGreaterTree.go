@@ -2,7 +2,6 @@ package leetcode
 
 import (
 	"AlgorithmWithGo/myLibs"
-	"fmt"
 )
 
 var sum int
