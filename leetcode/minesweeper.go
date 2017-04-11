@@ -11,37 +11,34 @@ Rules
 4. Return the board when no more squares will be revealed.
 */
 func updateBoard(board [][]byte, click []int) [][]byte{
-	if board[click[0]][click[1]] == 'M' {
+	switch board[click[0]][click[1]] {
+	case 'M':
 		board[click[0]][click[1]] = 'X'
-		return board
-	}
-
-	if board[click[0]][click[1]] == 'E'{
-		if numOfAdjMines := numOfAdjacentMine(board, click); numOfAdjMines == 0 {
-			board[click[0]][click[1]] = 'B'
-		 	revealEmptyBlocks(board, click)
-	 	} else {
-		 	board[click[0]][click[1]] = byte('0') + byte(numOfAdjMines)
-	 	}
+	case 'E':
+		reveal(board, click)
 	}
 
 	return board
 }
 
-func revealEmptyBlocks(board [][]byte, click []int) {
+func revealAdjEmptyBlocks(board [][]byte, click []int) {
 	for _, adj := range getAdjPositions(board, click) {
 		if board[adj[0]][adj[1]] == 'E' {
-			if numOfAdjMines := numOfAdjacentMine(board, adj); numOfAdjMines == 0 {
-				board[adj[0]][adj[1]] = 'B'
-				revealEmptyBlocks(board, adj)
-			} else {
-				board[adj[0]][adj[1]] = byte('0') + byte(numOfAdjMines)
-			}
+			reveal(board, adj)
 		}
 	}
 }
 
-func numOfAdjacentMine(board [][]byte, click []int) int {
+func reveal(board [][]byte, position []int) {
+	if numOfAdjMines := getNumOfAdjacentMine(board, position); numOfAdjMines == 0 {
+		board[position[0]][position[1]] = 'B'
+		revealAdjEmptyBlocks(board, position)
+	} else {
+		board[position[0]][position[1]] = byte('0') + byte(numOfAdjMines)
+	}
+}
+
+func getNumOfAdjacentMine(board [][]byte, click []int) int {
 	numOfAdjMines := 0
 	for _, adj := range getAdjPositions(board, click) {
 		if board[adj[0]][adj[1]] == 'M' {
