@@ -12,6 +12,10 @@ type TreeNode struct {
 }
 
 func MakeTreeNode(inputString string) *TreeNode {
+	if inputString == "" {
+		return nil
+	}
+
 	root := new(TreeNode)
 	rows := make([]*TreeNode, 0)
 
