@@ -1,4 +1,4 @@
-package cj2015
+package template
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func CJ_2015_1 () {
+func Template () {
 	pathName := "/home/yskang/Downloads/2014_01/"
 	inputFileName := "problem1.in"
 	outputFileName := "result1.out"
