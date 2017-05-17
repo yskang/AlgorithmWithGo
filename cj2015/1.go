@@ -10,8 +10,8 @@ import (
 )
 
 func CJ_2015_1 () {
-	pathName := "/home/yskang/Downloads/2014_01/"
-	inputFileName := "problem0.in"
+	pathName := "/home/yskang/Documents/2015_1/"
+	inputFileName := "problem1.in"
 	outputFileName := "result1.out"
 	results := make([]string, 0)
 
@@ -21,13 +21,21 @@ func CJ_2015_1 () {
 	checkErr(err)
 
 	for t := 0 ; t < T ; t++ {
+
+		bestScore := 10000
+		bestPhoneNumber := ""
 		N, err := strconv.Atoi(inputs.Pop())
 		checkErr(err)
 		for i := 0 ; i < N ; i++ {
 			phoneNumber := inputs.Pop()
-			fmt.Println(getScore(phoneNumber))
+			score := getScore(phoneNumber)
+			if score < bestScore {
+				bestScore = score
+				bestPhoneNumber = phoneNumber
+			}
 		}
-		results = append(results, strconv.Itoa(t))
+
+		results = append(results, bestPhoneNumber)
 	}
 
 	result := strings.Join(results, "\n")
