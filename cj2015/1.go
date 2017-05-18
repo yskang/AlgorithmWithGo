@@ -10,7 +10,7 @@ import (
 )
 
 func CJ_2015_1 () {
-	pathName := "/home/yskang/Documents/2015_1/"
+	pathName := "/home/yskang/Downloads/2014_01/"
 	inputFileName := "problem1.in"
 	outputFileName := "result1.out"
 	results := make([]string, 0)
@@ -29,6 +29,7 @@ func CJ_2015_1 () {
 		for i := 0 ; i < N ; i++ {
 			phoneNumber := inputs.Pop()
 			score := getScore(phoneNumber)
+			fmt.Println(score, ":", phoneNumber)
 			if score < bestScore {
 				bestScore = score
 				bestPhoneNumber = phoneNumber
@@ -55,7 +56,7 @@ func getScore(number string) int {
 				prevDirection = direction
 				score += 1
 			} else {
-				prevDirection = direction
+				prevDirection = "NO"
 				score += 2
 			}
 		} else {
@@ -70,6 +71,7 @@ func getScore(number string) int {
 				prevDirection = direction
 			} else {
 				score += 3
+				prevDirection = "NO"
 			}
 		}
 		prevNumber = number[i]
