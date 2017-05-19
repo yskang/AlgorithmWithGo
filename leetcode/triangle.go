@@ -4,9 +4,11 @@ import "fmt"
 var cnt int
 
 func solve(n int, a int, b int, c int, chkMap map[string]int) {
+	//fmt.Println("check", a, b, c)
 	if a + b + c == n {
 		str := fmt.Sprintf("%d,%d,%d",a,b,c)
 		if a < b + c && b < a + c && c < a + b && a <= b && b <= c && chkMap[str] == 0 {
+			fmt.Println("add count", a, b, c)
 			cnt += 1
 			chkMap[str] = 1
 		}
