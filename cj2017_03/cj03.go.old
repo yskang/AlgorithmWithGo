@@ -1,0 +1,121 @@
+package cj2016_03
+
+import (
+	"fmt"
+	"strings"
+	"io/ioutil"
+	"os"
+	"strconv"
+	"time"
+)
+
+var bStop bool
+
+func CJ_2016_03 () {
+	pathName := "/home/yskang/Documents/cj_03/"
+	inputFileName := "Set1.in"
+	outputFileName := "Set1.out"
+	results := make([]string, 0)
+
+	inputs := readFile(pathName + inputFileName)
+
+	T, err := strconv.Atoi(inputs.Pop())
+	checkErr(err)
+
+	for t := 0 ; t < T ; t++ {
+		line := strings.Split(inputs.Pop(), " ")
+		n, err := strconv.Atoi(line[0])
+		checkErr(err)
+		k, err := strconv.Atoi(line[1])
+		checkErr(err)
+
+		fmt.Println(n, k)
+
+		results = append(results, isValid(n, k))
+	}
+
+	result := strings.Join(results, "\n")
+
+	writeResultFile(pathName + outputFileName, []byte(result))
+}
+
+func isValid(n int, k int) string {
+	if n == k {
+		return "O"
+	}
+
+	chkMap := make(map[string]int)
+
+	bStop = false
+	solveEquation(0, 0, 0, 0, 0, n, chkMap, k)
+
+	if bStop {
+		return "O"
+	}
+	return "X"
+}
+
+func solveEquation(one int, four int, five int, nine int, ten int, n int, chkMap map[string]int, k int) {
+	if bStop {
+		return
+	}
+
+	str := strconv.Itoa(one)+","+strconv.Itoa(four)+","+strconv.Itoa(five)+","+strconv.Itoa(nine)+","+strconv.Itoa(ten)
+	if one * 1 + four * 4 + five * 5 + nine * 9 + ten * 10 == n && chkMap[str] == 0 {
+		fmt.Println("(1)", one,"(4)", four, "(5)", five, "(9)", nine, "(10) ", ten)
+		if one * 1 + four * 3 + five * 2 + nine * 3 + ten * 2 == k {
+			fmt.Println("found!!!!")
+			bStop = true
+		}
+		chkMap[str] = 1
+		return
+	} else if one * 1 + four * 4 + five * 5 + nine * 9 + ten * 10 > n {
+		return
+	}
+
+	solveEquation(one + 1, four, five, nine, ten, n, chkMap, k)
+	solveEquation(one, four + 1, five, nine, ten, n, chkMap, k)
+	solveEquation(one, four, five + 1, nine, ten, n, chkMap, k)
+	solveEquation(one, four, five, nine + 1, ten, n, chkMap, k)
+	solveEquation(one, four, five, nine, ten + 1, n, chkMap, k)
+}
+
+func readFile(path string) Queue {
+	t1 := time.Now()
+	dat, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println(err)
+	}
+	lines := strings.Split(strings.Replace(string(dat), "\r", "", -1), "\n")
+	size := len(lines)
+	fmt.Println("read file time : ", time.Now().Sub(t1))
+	return Queue{lines, size, 0, size-1, size-1}
+}
+
+func writeResultFile(path string, data []byte) {
+	ioutil.WriteFile(path, data, os.ModePerm)
+}
+
+type Queue struct {
+	nodes []string
+	size  int
+	head  int
+	tail  int
+	count int
+}
+
+func (q *Queue) Pop() string {
+	if q.count == 0 {
+		return "Empty"
+	}
+	node := q.nodes[q.head]
+	q.head = (q.head + 1) % len(q.nodes)
+	q.count--
+	return node
+}
+
+func checkErr(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
+}
