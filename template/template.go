@@ -10,12 +10,13 @@ import (
 )
 
 func Template () {
-	pathName := "/home/yskang/Downloads/2014_01/"
-	inputFileName := "problem1.in"
-	outputFileName := "result1.out"
+	args := os.Args[1:]
+	inputFileName := args[0]
+	outputFileName := strings.Replace(inputFileName, ".in", ".out", 1)
+
 	results := make([]string, 0)
 
-	inputs := readFile(pathName + inputFileName)
+	inputs := readFile(inputFileName)
 
 	T, err := strconv.Atoi(inputs.Pop())
 	checkErr(err)
@@ -32,7 +33,7 @@ func Template () {
 
 	result := strings.Join(results, "\n")
 
-	writeResultFile(pathName + outputFileName, []byte(result))
+	writeResultFile(outputFileName, []byte(result))
 }
 
 func getScore(number string) {
