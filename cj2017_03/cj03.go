@@ -7,11 +7,16 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"sync"
+	"runtime"
 )
 
+//2m 32s 684ms
 func CJ_2017_03() {
 	args := os.Args[1:]
 	inputFileName := args[0]
+
+	inputFileName = os.Getenv("GOPATH") +"/src/AlgorithmWithGo/cj2017_03/" + "Set3.in"
 	outputFileName := strings.Replace(inputFileName, ".in", ".out", 1)
 
 	results := make([]string, 0)
@@ -36,6 +41,92 @@ func CJ_2017_03() {
 	result := strings.Join(results, "\n")
 
 	writeResultFile(outputFileName, []byte(result))
+}
+
+// 1m 28s 583ms
+func CJ_2017_03_with_goroutine() {
+	runtime.GOMAXPROCS(4)
+
+	args := os.Args[1:]
+	inputFileName := args[0]
+
+	inputFileName = os.Getenv("GOPATH") +"/src/AlgorithmWithGo/cj2017_03/" + "Set3.in"
+	outputFileName := strings.Replace(inputFileName, ".in", "withGoroutine.out", 1)
+
+
+	inputs := readFile(inputFileName)
+
+	T, err := strconv.Atoi(inputs.Pop())
+	checkErr(err)
+
+	var wait sync.WaitGroup
+	wait.Add(T)
+
+	results := make([]string, T)
+
+	for t := 0 ; t < T ; t++ {
+		line := strings.Split(inputs.Pop(), " ")
+		n, err := strconv.Atoi(line[0])
+		checkErr(err)
+		k, err := strconv.Atoi(line[1])
+		checkErr(err)
+
+		fmt.Println(n, k)
+
+		go isValidGoRoutine(n, k, t, results, wait.Done)
+	}
+
+	wait.Wait()
+	result := strings.Join(results, "\n")
+
+	writeResultFile(outputFileName, []byte(result))
+}
+
+func isValidGoRoutine(n int, k int, testNum int, results []string, done func()) {
+	defer done()
+	if n == k {
+		results[testNum] = "O"
+		return
+	}
+
+	var remainder int
+
+	ten := n / 10
+
+	for i := ten; i >= 0 ; i-- {
+		remainder = n - i * 10
+		nine := remainder / 9
+
+		if i * 2 <= k {
+			for j := nine ; j >= 0 ; j-- {
+				r := remainder - j * 9
+				five := r / 5
+
+				if i * 2 + j * 3 <= k {
+					for l := five ; l >= 0 ; l-- {
+						s := r - l * 5
+						four := s / 4
+
+						if i * 2 + j * 3 + l * 2 <= k {
+							for m := four ; m >= 0 ; m-- {
+								t := s - m * 4
+
+								if i * 2 + j * 3 + l * 2 + m * 3 + t == k {
+									results[testNum] = "O"
+									return
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+
+	}
+
+	results[testNum] = "X"
+	return
 }
 
 func isValid(n int, k int) string {

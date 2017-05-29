@@ -22,6 +22,10 @@ func TestCJ2017_3(t *testing.T) {
 	//cj2017_03.IsValid(1000, 1)
 }
 
+func TestCJ2017_3_Goroutine(t *testing.T) {
+	cj2017_03.CJ_2017_03_with_goroutine()
+}
+
 func TestCJ2017_4(t *testing.T) {
 	cj2017_04.CJ_2017_04()
 }
