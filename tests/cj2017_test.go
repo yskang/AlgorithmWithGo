@@ -26,6 +26,10 @@ func TestCJ2017_3_Goroutine(t *testing.T) {
 	cj2017_03.CJ_2017_03_with_goroutine()
 }
 
+func TestCJ2017_3_Goroutine_channel(t *testing.T) {
+	cj2017_03.CJ_2017_03_with_goroutine_channel()
+}
+
 func TestCJ2017_4(t *testing.T) {
 	cj2017_04.CJ_2017_04()
 }

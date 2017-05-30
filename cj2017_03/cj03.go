@@ -11,7 +11,7 @@ import (
 	"runtime"
 )
 
-//2m 32s 684ms
+//2m 32s 684ms (3m 4s 660ms)
 func CJ_2017_03() {
 	args := os.Args[1:]
 	inputFileName := args[0]
@@ -43,7 +43,7 @@ func CJ_2017_03() {
 	writeResultFile(outputFileName, []byte(result))
 }
 
-// 1m 28s 583ms
+// 1m 28s 583ms (2m 31s 709ms)
 func CJ_2017_03_with_goroutine() {
 	runtime.GOMAXPROCS(4)
 
@@ -81,6 +81,99 @@ func CJ_2017_03_with_goroutine() {
 
 	writeResultFile(outputFileName, []byte(result))
 }
+
+func CJ_2017_03_with_goroutine_channel() {
+	runtime.GOMAXPROCS(4)
+
+	args := os.Args[1:]
+	inputFileName := args[0]
+
+	inputFileName = os.Getenv("GOPATH") +"/src/AlgorithmWithGo/cj2017_03/" + "Set3.in"
+	outputFileName := strings.Replace(inputFileName, ".in", "withGoroutine.out", 1)
+
+
+	inputs := readFile(inputFileName)
+
+	T, err := strconv.Atoi(inputs.Pop())
+	checkErr(err)
+
+	results := make([]string, T)
+
+	channels := make([]chan string, T)
+
+	for t := 0 ; t < T ; t++ {
+		line := strings.Split(inputs.Pop(), " ")
+		n, err := strconv.Atoi(line[0])
+		checkErr(err)
+		k, err := strconv.Atoi(line[1])
+		checkErr(err)
+
+		channels[t] = make(chan string, 1)
+
+		go func(n, k, t int) {
+			fmt.Println(n, k)
+
+			time.Sleep(0)
+			isValidGoRoutineChannel(n, k, channels[t])
+		} (n, k, t)
+		time.Sleep(0)
+	}
+
+	for i := 0 ; i < T ; i++ {
+		results[i] = <- channels[i]
+	}
+
+	result := strings.Join(results, "\n")
+
+	writeResultFile(outputFileName, []byte(result))
+}
+
+func isValidGoRoutineChannel(n int, k int, ch chan string) {
+	if n == k {
+		ch <- "O"
+		return
+	}
+
+	var remainder int
+
+	ten := n / 10
+
+	for i := ten; i >= 0 ; i-- {
+		remainder = n - i * 10
+		nine := remainder / 9
+
+		if i * 2 <= k {
+			for j := nine ; j >= 0 ; j-- {
+				r := remainder - j * 9
+				five := r / 5
+
+				if i * 2 + j * 3 <= k {
+					for l := five ; l >= 0 ; l-- {
+						s := r - l * 5
+						four := s / 4
+
+						if i * 2 + j * 3 + l * 2 <= k {
+							for m := four ; m >= 0 ; m-- {
+								t := s - m * 4
+
+								if i * 2 + j * 3 + l * 2 + m * 3 + t == k {
+									ch <- "O"
+									return
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}
+
+	}
+
+	ch <- "X"
+	return
+}
+
 
 func isValidGoRoutine(n int, k int, testNum int, results []string, done func()) {
 	defer done()
