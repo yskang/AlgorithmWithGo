@@ -82,6 +82,7 @@ func CJ_2017_03_with_goroutine() {
 	writeResultFile(outputFileName, []byte(result))
 }
 
+// (1m 46s 668ms)
 func CJ_2017_03_with_goroutine_channel() {
 	runtime.GOMAXPROCS(4)
 
