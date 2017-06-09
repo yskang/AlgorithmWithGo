@@ -7,13 +7,16 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"math"
 )
+
+// 7, 20, 30, 96
 
 func Gcj_2017_03 () {
 	args := os.Args[1:]
 	inputFileName := args[0]
 
-	inputFileName = os.Getenv("GOPATH") +"/src/AlgorithmWithGo/gcj_2017_03/" + "C-small-practice-1.in"
+	inputFileName = os.Getenv("GOPATH") +"/src/AlgorithmWithGo/gcj_2017_03/" + "C-large-practice.in"
 
 	outputFileName := strings.Replace(inputFileName, ".in", ".out", 1)
 
@@ -28,6 +31,7 @@ func Gcj_2017_03 () {
 		line := strings.Split(inputs.Pop(), " ")
 		n, _ := strconv.Atoi(line[0])
 		k, _ := strconv.Atoi(line[1])
+
 		max, min := calculateEmpty(n, k)
 		results = append(results, fmt.Sprintf("Case #%d: %d %d", t+1, max, min))
 	}
@@ -38,9 +42,49 @@ func Gcj_2017_03 () {
 }
 
 func calculateEmpty(n int, k int) (int, int) {
-	return 0, 0
-}
+	fmt.Println("n:", n, "k", k)
 
+	//divideCount := int(math.Log2(float64(k)))
+	//fmt.Println(float64(k))
+	//fmt.Println(math.Log2(float64(288230376151711000)))
+	//fmt.Println("divide count:", divideCount)
+
+	divideCount := 0
+	for int(math.Pow(2, float64(divideCount))) <= k {
+		//fmt.Printf("%d, %f, %f, %d\n",divideCount, math.Pow(2, float64(divideCount)),float64(288230376151711743),k)
+		divideCount += 1
+	}
+	divideCount -= 1
+
+	fmt.Println(math.MaxFloat64)
+	fmt.Println("divide count:", divideCount)
+
+	powerOfTwo := int(math.Pow(2, float64(divideCount)))
+
+	remainedStalls := n - (powerOfTwo - 1)
+	remainedPersons := k - (powerOfTwo - 1)
+	fmt.Println("remaind stalls:", remainedStalls)
+
+	emptyStalls := remainedStalls / powerOfTwo
+	plusOneCount := remainedStalls % powerOfTwo
+
+	numberOfSections := powerOfTwo
+
+	fmt.Println("number of empty sections:", numberOfSections, "emptyStalls:", emptyStalls, "plus count", plusOneCount)
+
+	if remainedPersons <= plusOneCount && plusOneCount > 0 {
+		emptyStalls += 1
+	}
+
+	fmt.Println("empty stalls:", emptyStalls)
+
+	if emptyStalls % 2 == 0 {
+		fmt.Println(emptyStalls / 2, emptyStalls / 2-1)
+		return emptyStalls / 2, emptyStalls / 2 - 1
+	}
+	fmt.Println(emptyStalls / 2, emptyStalls / 2)
+	return emptyStalls / 2, emptyStalls / 2
+}
 
 func readFile(path string) Queue {
 	t1 := time.Now()
