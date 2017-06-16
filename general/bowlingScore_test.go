@@ -1,6 +1,9 @@
 package general
 
-import "testing"
+import (
+	"testing"
+	"fmt"
+)
 
 func TestOneInputReturn0(t *testing.T) {
 	expectScore := 0
@@ -141,4 +144,10 @@ func TestFreeScore(t *testing.T) {
 	if score != expectScore {
 		t.Error("Wrong answer! expect score is", expectScore, "but return ", score)
 	}
+}
+
+func ExampleBowlingScore() {
+	fmt.Println(BowlingScore("908/72X9/09X0/90XX8"))
+	// Output:
+	// 150
 }
