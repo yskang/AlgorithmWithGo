@@ -1,6 +1,6 @@
 package leetcode
 
-func SingleNumber2(nums []int) []int {
+func SingleNumber3(nums []int) []int {
 	return singleNumber(nums)
 }
 
