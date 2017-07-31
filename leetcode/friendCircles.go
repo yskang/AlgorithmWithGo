@@ -1,8 +1,9 @@
 package leetcode
 
-func FriendgCircles(M [][]int) int {
+func FriendCircles(M [][]int) int {
 	return findCircleNum(M)
 }
+
 func findCircleNum(M [][]int) int {
 	members := make([]int, len(M))
 	count := 0

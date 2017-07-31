@@ -6,13 +6,13 @@ import (
 )
 
 func ExampleFriendCircles() {
-	fmt.Println(leetcode.FriendgCircles([][]int{
+	fmt.Println(leetcode.FriendCircles([][]int{
 		{1,1,0},
 		{1,1,0},
 		{0,0,1},
 	}))
 
-	fmt.Println(leetcode.FriendgCircles([][]int{
+	fmt.Println(leetcode.FriendCircles([][]int{
 		{1,1,0},
 		{1,1,1},
 		{0,1,1},
