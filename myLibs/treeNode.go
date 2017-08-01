@@ -19,29 +19,31 @@ func MakeTreeNode(inputString string) *TreeNode {
 	root := new(TreeNode)
 	rows := make([]*TreeNode, 0)
 
-	inputStringsSplitedByComma := strings.Split(inputString, ",")
+	inputStringsSplitByComma := strings.Split(inputString, ",")
 
 	inputStringsTrimmed := make([]string, 0)
-	for _, s := range inputStringsSplitedByComma {
+	for _, s := range inputStringsSplitByComma {
 		inputStringsTrimmed = append(inputStringsTrimmed, strings.TrimSpace(s))
 	}
 
 	root.Val, _ = strconv.Atoi(inputStringsTrimmed[0])
 	rows = append(rows, root)
 
-	offset := 0
+	offset := 1
+
 	for {
-		offset += len(rows)
+		count := 0
 		if offset == len(inputStringsTrimmed) {
 			break
 		}
 		temp := make([]*TreeNode, 0)
-		for j:=0 ; j < len(rows) ; j++ {
-			for k:= 0 ; k < 2 ; k++ {
-				if offset + k + j*2 > len(inputStringsTrimmed) - 1 {
+		for j := 0 ; j < len(rows) ; j++ {
+			for k := 0 ; k < 2 ; k++ {
+				if offset + k + j * 2 > len(inputStringsTrimmed) - 1 {
 					return root
 				}
-				input := inputStringsTrimmed[offset + k + j*2]
+				input := inputStringsTrimmed[offset + k + j * 2]
+				count += 1
 				val, error := strconv.Atoi(input)
 				node := new(TreeNode)
 
@@ -57,6 +59,7 @@ func MakeTreeNode(inputString string) *TreeNode {
 			}
 		}
 		rows = temp
+		offset += count
 	}
 
 	return root
@@ -74,4 +77,39 @@ func CompareTreeNode(nodeA *TreeNode, nodeB *TreeNode) bool {
 	}
 
 	return false
+}
+
+func PrintTreeNode(node *TreeNode) string {
+	nodeString := make([]string, 0)
+	queue := make([]*TreeNode, 0)
+
+	currNode := node
+
+	for {
+		if currNode != nil {
+			nodeString = append(nodeString, strconv.Itoa(currNode.Val))
+
+			if currNode.Left == nil && currNode.Right == nil {
+			} else {
+				queue = append(queue, currNode.Left)
+				queue = append(queue, currNode.Right)
+			}
+
+		} else {
+			nodeString = append(nodeString, "null")
+		}
+
+		if len(queue) > 0 {
+			currNode = queue[0]
+			queue = queue[1:]
+		} else {
+			break
+		}
+	}
+
+	if nodeString[len(nodeString) - 1] == "null" {
+		nodeString = nodeString[:len(nodeString)-2]
+	}
+
+	return strings.Join(nodeString, ",")
 }
