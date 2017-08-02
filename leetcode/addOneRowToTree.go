@@ -2,7 +2,6 @@ package leetcode
 
 import (
 	"AlgorithmWithGo/myLibs"
-	"fmt"
 )
 
 func AddOneRowToTree(root *myLibs.TreeNode, v int, d int) *myLibs.TreeNode {
@@ -10,6 +9,5 @@ func AddOneRowToTree(root *myLibs.TreeNode, v int, d int) *myLibs.TreeNode {
 }
 
 func addOneRow(root *myLibs.TreeNode, v int, d int) *myLibs.TreeNode {
-	fmt.Println(myLibs.PrintTreeNode(root))
 	return root
 }
