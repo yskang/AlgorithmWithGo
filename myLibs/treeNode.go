@@ -88,10 +88,8 @@ func PrintTreeNode(node *TreeNode) string {
 	for {
 		if currNode != nil {
 			nodeString = append(nodeString, strconv.Itoa(currNode.Val))
-			if currNode.Left != nil || currNode.Right != nil {
-				queue = append(queue, currNode.Left)
-				queue = append(queue, currNode.Right)
-			}
+			queue = append(queue, currNode.Left)
+			queue = append(queue, currNode.Right)
 		} else {
 			nodeString = append(nodeString, "null")
 		}
@@ -104,9 +102,13 @@ func PrintTreeNode(node *TreeNode) string {
 		}
 	}
 
-	if nodeString[len(nodeString) - 1] == "null" {
-		nodeString = nodeString[:len(nodeString)-1]
+	index := len(nodeString) - 1
+	for i := len(nodeString) - 1 ; i >= 0 ; i-- {
+		if nodeString[i] != "null" {
+			index = i + 1
+			break
+		}
 	}
 
-	return strings.Join(nodeString, ",")
+	return strings.Join(nodeString[:index], ",")
 }
