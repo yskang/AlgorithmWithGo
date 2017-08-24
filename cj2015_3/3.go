@@ -2,14 +2,14 @@ package cj2015_3
 
 import (
 	"fmt"
-	"strings"
 	"io/ioutil"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
-func Cj2015_3 () {
+func Cj2015_3() {
 	pathName := "/home/yskang/Downloads/2014_03/"
 	inputFileName := "problem0.in"
 	outputFileName := "result0.out"
@@ -20,7 +20,7 @@ func Cj2015_3 () {
 	T, err := strconv.Atoi(inputs.Pop())
 	checkErr(err)
 
-	for t := 0 ; t < T ; t++ {
+	for t := 0; t < T; t++ {
 		line := strings.Split(inputs.Pop(), " ")
 		N, err := strconv.Atoi(line[0])
 		checkErr(err)
@@ -30,7 +30,7 @@ func Cj2015_3 () {
 		fmt.Println(N, M)
 		pairs := make(map[string][]string)
 
-		for i := 0 ; i < M ; i++ {
+		for i := 0; i < M; i++ {
 			pair := strings.Split(inputs.Pop(), " ")
 			pairs[pair[0]] = append(pairs[pair[0]], pair[1])
 			pairs[pair[1]] = append(pairs[pair[1]], pair[0])
@@ -43,9 +43,8 @@ func Cj2015_3 () {
 
 	result := strings.Join(results, "\n")
 
-	writeResultFile(pathName + outputFileName, []byte(result))
+	writeResultFile(pathName+outputFileName, []byte(result))
 }
-
 
 func readFile(path string) Queue {
 	t1 := time.Now()
@@ -56,7 +55,7 @@ func readFile(path string) Queue {
 	lines := strings.Split(strings.Replace(string(dat), "\r", "", -1), "\n")
 	size := len(lines)
 	fmt.Println("read file time : ", time.Now().Sub(t1))
-	return Queue{lines, size, 0, size-1, size-1}
+	return Queue{lines, size, 0, size - 1, size - 1}
 }
 
 func writeResultFile(path string, data []byte) {
