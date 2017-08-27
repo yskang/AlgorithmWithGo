@@ -26,6 +26,13 @@ type info struct {
 	height int
 }
 
+func (b *ball) setInit(num int) {
+	b.count = num
+	b.direction = []string{"first"}
+	b.x = b.origin.x
+	b.y = b.origin.y
+}
+
 func (i *info) setMap(m []string) {
 	copy(i.golfMap, m)
 }
@@ -57,17 +64,18 @@ func (b *ball) getNext() []ball {
 			balls = append(balls, ball{append(b.direction, "right"),b.count-1, b.x+b.count, b.y, b.information, b.origin})
 		}
 	} else {
-		if b.direction[len(b.direction)-1] != "up" && b.direction[len(b.direction)-1] != "down" && b.y-b.count >= 0  && b.y-b.count < b.information.height && !b.information.isOnWater(b.x, b.y-b.count){
-			balls = append(balls, ball{append(b.direction, "up"),b.count-1, b.x, b.y-b.count, b.information, b.origin})
+		if b.direction[len(b.direction)-1] != "down" && b.y-b.count >= 0  && b.y-b.count < b.information.height && !b.information.isOnWater(b.x, b.y-b.count){
+
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "up"),b.count-1, b.x, b.y-b.count, b.information, b.origin})
 		}
-		if b.direction[len(b.direction)-1] != "down" && b.direction[len(b.direction)-1] != "up" && b.y+b.count < b.information.height && !b.information.isOnWater(b.x, b.y+b.count){
-			balls = append(balls, ball{append(b.direction, "down"),b.count-1, b.x, b.y+b.count, b.information, b.origin})
+		if b.direction[len(b.direction)-1] != "up" && b.y+b.count < b.information.height && !b.information.isOnWater(b.x, b.y+b.count){
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "down"),b.count-1, b.x, b.y+b.count, b.information, b.origin})
 		}
-		if b.direction[len(b.direction)-1] != "left" && b.direction[len(b.direction)-1] != "right" && b.x-b.count >= 0 && b.x-b.count < b.information.width && !b.information.isOnWater(b.x-b.count, b.y){
-			balls = append(balls, ball{append(b.direction, "left"),b.count-1, b.x-b.count, b.y, b.information, b.origin})
+		if b.direction[len(b.direction)-1] != "right" && b.x-b.count >= 0 && b.x-b.count < b.information.width && !b.information.isOnWater(b.x-b.count, b.y){
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "left"),b.count-1, b.x-b.count, b.y, b.information, b.origin})
 		}
-		if b.direction[len(b.direction)-1] != "right" && b.direction[len(b.direction)-1] != "left" && b.x+b.count < b.information.width && !b.information.isOnWater(b.x+b.count, b.y){
-			balls = append(balls, ball{append(b.direction, "right"),b.count-1, b.x+b.count, b.y, b.information, b.origin})
+		if b.direction[len(b.direction)-1] != "left" && b.x+b.count < b.information.width && !b.information.isOnWater(b.x+b.count, b.y){
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "right"),b.count-1, b.x+b.count, b.y, b.information, b.origin})
 		}
 	}
 
@@ -109,20 +117,18 @@ func main() {
 
 	gameInfo.setMap(field)
 
-	fmt.Fprintln(os.Stderr, "Field:")
-	for _, row := range field {
-		fmt.Fprintln(os.Stderr, row)
-	}
+	//fmt.Fprintln(os.Stderr, "Field:")
+	//for _, row := range field {
+	//	fmt.Fprintln(os.Stderr, row)
+	//}
 
 	routeVectorsMap := make(map[position][][]string)
-	ballInfos := make([]ballInfo, 0)
 	for _, ball := range balls {
-		fmt.Fprintln(os.Stderr, "for ball:", ball)
-		ballInfos = append(ballInfos, ballInfo{ball.origin, ball.count})
+		//fmt.Fprintln(os.Stderr, "for ball:", ball)
 		hitBall(field, ball, routeVectorsMap)
 	}
 
-	fmt.Fprintln(os.Stderr, "route vector map:", routeVectorsMap)
+	//fmt.Fprintln(os.Stderr, "route vector map:", routeVectorsMap)
 
 	routeMap := make(map[position][]route)
 	for p := range routeVectorsMap {
@@ -132,34 +138,34 @@ func main() {
 	}
 
 	// print route map
-	for _, ball := range balls {
-		fmt.Fprintln(os.Stderr, "route of ball ", ball.origin)
-		for _, r := range routeMap[ball.origin] {
-			for _, row := range r.cells {
-				line := ""
-				for _, c := range row {
-					if c == "" {
-						c = " "
-					}
-					line += c
-				}
-				fmt.Fprintln(os.Stderr, line)
-			}
-		}
-		fmt.Fprintln(os.Stderr, "")
-	}
+	//for _, ball := range balls {
+	//	fmt.Fprintln(os.Stderr, "route of ball ", ball.origin)
+	//	for _, r := range routeMap[ball.origin] {
+	//		for _, row := range r.cells {
+	//			line := ""
+	//			for _, c := range row {
+	//				if c == "" {
+	//					c = " "
+	//				}
+	//				line += c
+	//			}
+	//			fmt.Fprintln(os.Stderr, line)
+	//		}
+	//	}
+	//	fmt.Fprintln(os.Stderr, "")
+	//}
 
-	mergeRoutes := make([][]route, height+1)
+	mergeRoutes := make([][]route, len(balls)+1)
 	mergeRoutes[0] = make([]route, 1)
 	mergeRoutes[0][0] = makeRoute(width, height)
-	for i := 1 ; i <= height ; i++ {
+	for i := 1 ; i <= len(balls) ; i++ {
 		mergeRoutes[i] = make([]route, 0)
 	}
 
 	drawMergeRoute(routeMap, balls, 0, &mergeRoutes)
 
-	fmt.Fprintln(os.Stderr, "final route:", mergeRoutes)
-	fmt.Fprintln(os.Stderr, "route size:", len(mergeRoutes[len(balls)]))
+	//fmt.Fprintln(os.Stderr, "final route:", mergeRoutes)
+	//fmt.Fprintln(os.Stderr, "route size:", len(mergeRoutes[len(balls)]))
 
 	for _, row := range mergeRoutes[len(balls)][0].print() {
 		fmt.Println(row)
@@ -173,6 +179,7 @@ func drawMergeRoute(routeMap map[position][]route, balls []ball, i int, mergeRou
 		return
 	}
 
+	//fmt.Fprintln(os.Stderr, "i", i, balls)
 	for _, r := range routeMap[balls[i].origin] {
 		for _, mr := range (*mergeRoutes)[i] {
 			if !isCross(mr, r) {
@@ -284,9 +291,8 @@ type ballInfo struct {
 
 func hitBall(field []string, b ball, routeMap map[position][][]string) {
 	if byte(field[b.y][b.x]) == 'H' {
-		fmt.Fprintln(os.Stderr, "Hole!! append", b.direction)
+		//fmt.Fprintln(os.Stderr, "Hole!!",b.x,b.y," append", b.direction)
 		routeMap[b.origin] = append(routeMap[b.origin], b.direction)
-
 		return
 	}
 
@@ -294,6 +300,7 @@ func hitBall(field []string, b ball, routeMap map[position][][]string) {
 		return
 	}
 
+	//fmt.Fprintln(os.Stderr, "next balls:", b.getNext())
 	for _, nextBall := range b.getNext() {
 		hitBall(field, nextBall, routeMap)
 	}
