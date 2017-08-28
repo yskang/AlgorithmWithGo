@@ -1,14 +1,25 @@
 package leetcode
 
 func PredictTheWinner(nums []int) bool {
-	return totalScore_A_minus_B(nums, 0, len(nums)-1, 1) >= 0
+	dp := make([][]int, len(nums))
+	for i := range dp {
+		dp[i] = make([]int, len(nums))
+	}
+	for length := 2 ; length <= len(nums) ; length++ {
+		start, end := 0, 0
+		for end < len(nums) - 1 {
+			end = start + length - 1
+			dp[start][end] = max(nums[start]-dp[start+1][end], nums[end]-dp[start][end-1])
+			start += 1
+		}
+	}
+
+	return dp[0][len(nums)-1] >= 0
 }
 
-func totalScore_A_minus_B(nums []int, start int, end int, turn int) int {
-	if start == end {
-		return turn * nums[start]
+func max(a int, b int) int {
+	if a > b {
+		return a
 	}
-	a := turn * nums[start] + totalScore_A_minus_B(nums, start + 1, end, -turn)
-	b := turn * nums[end] + totalScore_A_minus_B(nums, start, end - 1, -turn)
-	return turn * max(turn * a, turn * b)
+	return b
 }

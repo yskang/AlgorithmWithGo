@@ -11,14 +11,14 @@ func integerBreak(n int) int {
 
 	for i := 2 ; i <= n ; i ++ {
 		for j := 1 ; j < i ; j++ {
-			products[i] = max(products[i], max(j, products[j]) * max(i-j, products[i-j]))
+			products[i] = simpleMax(products[i], simpleMax(j, products[j]) * simpleMax(i-j, products[i-j]))
 		}
 	}
 
 	return products[n]
 }
 
-func max(a int, b int) int {
+func simpleMax(a int, b int) int {
 	if a > b {
 		return a
 	}
