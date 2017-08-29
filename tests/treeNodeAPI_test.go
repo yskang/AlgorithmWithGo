@@ -6,7 +6,7 @@ import (
 )
 
 func ExamplePrintTree()  {
-	fmt.Println(myLibs.PrintTreeNode(myLibs.MakeTreeNode("1,2,3,4,null,null,null,5,5")))
+	fmt.Println(myLibs.MakeTreeNode("1,2,3,null,4,null,5,6,null,7,8"))
 	// output:
-	// 1,2,3,4,null,null,null,5,5
+	// 1,2,3,null,4,null,5,6,null,7,8
 }
