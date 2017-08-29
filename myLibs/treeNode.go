@@ -79,11 +79,11 @@ func CompareTreeNode(nodeA *TreeNode, nodeB *TreeNode) bool {
 	return false
 }
 
-func printTreeNode(node *TreeNode) string {
+func (t *TreeNode) String() string {
 	nodeString := make([]string, 0)
 	queue := make([]*TreeNode, 0)
 
-	currNode := node
+	currNode := t
 
 	for {
 		if currNode != nil {
@@ -111,8 +111,4 @@ func printTreeNode(node *TreeNode) string {
 	}
 
 	return strings.Join(nodeString[:index], ",")
-}
-
-func (t *TreeNode) String() string {
-	return printTreeNode(t)
 }
