@@ -1,5 +1,10 @@
 package myLibs
 
+import (
+	"strings"
+	"strconv"
+)
+
 // ListNode library for leetcode solutions
 
 type ListNode struct {
@@ -21,4 +26,16 @@ func InitListNode(nums []int) *ListNode{
 	}
 
 	return &head
+}
+
+func (l *ListNode) String() string {
+	lists := make([]string, 0)
+
+	current := l
+	for current != nil {
+		lists = append(lists, strconv.Itoa(current.Val))
+		current = current.Next
+	}
+
+	return strings.Join(lists, ",")
 }
