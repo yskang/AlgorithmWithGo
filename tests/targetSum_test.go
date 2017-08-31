@@ -10,3 +10,9 @@ func ExampleTargetSum() {
 	// output:
 	// 5
 }
+
+func ExampleTargetSumWithDP() {
+	fmt.Println(leetcode.FindTargetSumWaysWithDP([]int{1, 1, 1, 1, 1}, 3))
+	// output:
+	// 5
+}
