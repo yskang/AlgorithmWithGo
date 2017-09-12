@@ -1,7 +1,5 @@
 package leetcode
 
-import "fmt"
-
 func WiggleMaxLength(nums []int) int {
 	return wiggleMaxLength(nums)
 }
