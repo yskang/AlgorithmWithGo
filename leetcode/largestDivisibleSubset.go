@@ -2,7 +2,6 @@ package leetcode
 
 import (
 	"sort"
-	"fmt"
 )
 
 func LargestDivisibleSubset(nums []int) []int {
@@ -10,34 +9,47 @@ func LargestDivisibleSubset(nums []int) []int {
 }
 
 func largestDivisibleSubset(nums []int) []int {
+	if len(nums) < 2 {
+		return nums
+	}
 	sort.Ints(nums)
 
-	T := make([]int, len(nums))
-	parent := make([]int, len(nums))
+	seeds := make([][]int, 1)
+	seeds[0] = append([]int{}, nums[0])
 
-	m, ni := 0, 0
-
-	for i := len(nums)-1 ; i >= 0 ; i-- {
-		for j := i ; j < len(nums) ; j++ {
-			if nums[j] % nums[i] == 0 && T[i] < 1 + T[j] {
-				T[i] = 1 + T[j]
-				parent[i] =j
-
-				if T[i] > m {
-					m = T[i]
-					ni = i
+	for i := 1 ; i < len(nums) ; i++ {
+		isChildOfOtherSeed := false
+		for seedIndex, children := range seeds {
+			for j := len(children)-1 ; j >= 0 ; j-- {
+				if nums[i] % children[j] == 0 {
+					if j == len(children)-1 {
+						seeds[seedIndex] = append(seeds[seedIndex], nums[i])
+					} else {
+						temp := append([]int{}, seeds[seedIndex][:j+1]...)
+						temp = append(temp, nums[i])
+						seeds = append(seeds, []int{})
+						seeds[len(seeds)-1] = append(seeds[len(seeds)-1], temp...)
+					}
+					isChildOfOtherSeed = true
+				}
+				if isChildOfOtherSeed {
+					break
 				}
 			}
 		}
+		if !isChildOfOtherSeed {
+			seeds = append(seeds, []int{nums[i]})
+		}
 	}
 
-	fmt.Println(T)
-	fmt.Println(parent)
-
-	ret := make([]int, 0)
-	for i := 0 ; i < m ; i++ {
-		ret = append(ret, nums[ni])
-		ni = parent[ni]
+	maxL := -1
+	maxSeed := 0
+	for seed, children := range seeds {
+		if maxL < len(children) {
+			maxL = len(children)
+			maxSeed = seed
+		}
 	}
-	return ret
+
+	return seeds[maxSeed]
 }
