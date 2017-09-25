@@ -19,10 +19,6 @@ func ConstructMaximumBinaryTree(nums []int) *myLibs.TreeNode {
 }
 
 func constructMaximumBinaryTree(nums []int) *myLibs.TreeNode {
-	return makeMaxBinaryTree(nums)
-}
-
-func makeMaxBinaryTree(nums []int) *myLibs.TreeNode {
 	if len(nums) == 0 {
 		return nil
 	} else if len(nums) == 1 {
