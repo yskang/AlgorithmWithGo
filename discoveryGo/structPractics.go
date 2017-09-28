@@ -4,14 +4,16 @@ import (
 	"time"
 )
 
-type Deadline time.Time
+type Deadline struct {
+	time.Time
+}
 
-func NewDeadLine(t time.Time) Deadline {
-	return Deadline(t)
+func NewDeadLine(t time.Time) *Deadline {
+	return &Deadline{t}
 }
 
 func (d Deadline) OverDue() bool {
-	return time.Time(d).Before(time.Now())
+	return d.Before(time.Now())
 }
 
 type status int
@@ -25,7 +27,7 @@ const (
 type Task struct {
 	Title string
 	Status status
-	Deadline Deadline
+	Deadline *Deadline
 }
 
 func (t Task) OverDue() bool {
