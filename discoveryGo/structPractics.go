@@ -2,6 +2,8 @@ package discoveryGo
 
 import (
 	"time"
+	"errors"
+	"fmt"
 )
 
 type Deadline struct {
@@ -25,9 +27,30 @@ const (
 )
 
 type Task struct {
-	Title string
-	Status status
-	Deadline *Deadline
+	Title    string    `json:"title,omitempty"`
+	Status   status    `json:"status,omitempty"`
+	Deadline *Deadline `json:"deadline,omitempty"`
+}
+
+func (s status) String() string {
+	switch s {
+	case UNKNOWN:
+		return "UNKNOWN"
+	case TODO:
+		return "TODO"
+	case DONE:
+		return "DONE"
+	default:
+		return ""
+	}
+}
+
+func (s status) MarshalJSON() ([]byte, error) {
+	str := s.String()
+	if str == "" {
+		return nil, errors.New("status.MarshalJSON: unknown value")
+	}
+	return []byte(fmt.Sprintf("\"%s\"", str)), nil
 }
 
 func (t Task) OverDue() bool {

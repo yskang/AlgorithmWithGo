@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"log"
+	"html/template"
 )
 
 type ID string
@@ -126,8 +127,9 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 		return id, nil
 	}
 
-	getTask := func() ([]Task, error) {
+	getTasks := func() ([]Task, error) {
 		var result []Task
+		//log.Println(r)
 		if err := r.ParseForm(); err != nil {
 			return nil, err
 		}
@@ -167,7 +169,7 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 			return
 		}
-		tasks, err := getTask()
+		tasks, err := getTasks()
 		if err != nil {
 			log.Println(err)
 			return
@@ -185,7 +187,8 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	case "POST":
-		tasks, err := getTask()
+		//log.Println("POST")
+		tasks, err := getTasks()
 		if err != nil {
 			log.Println(err)
 			return
@@ -220,9 +223,42 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+const htmlPrefix = "/task/"
+var tmpl = template.Must(template.ParseGlob("html/*.html"))
+
+func htmlHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		log.Println(r.Method, "method is not supported")
+		return
+	}
+	getID := func() (ID, error) {
+		id := ID(r.URL.Path[len(htmlPrefix)])
+		if id == "" {
+			return id, errors.New("htmlHandler: ID is empty")
+		}
+		return id, nil
+	}
+	id, err := getID()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	t, err := m.Get(id)
+	err = tmpl.ExecuteTemplate(w, "task.html", &Response{
+		ID: id,
+		Task: t,
+		Error: ResponseError{err},
+	})
+	if err != nil {
+		log.Println(err)
+		return
+	}
+}
+
 func taskMan() {
 	http.HandleFunc(pathPrefix, apiHandler)
-	log.Fatal(http.ListenAndServe(":8887", nil))
+	http.HandleFunc(htmlPrefix, htmlHandler)
+	log.Fatal(http.ListenAndServe(":8884", nil))
 }
 
 func ExampleTaskMan() {
