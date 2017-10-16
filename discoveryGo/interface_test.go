@@ -11,7 +11,7 @@ func (t Task2) String() string {
 }
 
 func ExampleTask_String() {
-	fmt.Println(Task{"Laundry", DONE, nil})
+	fmt.Println(Task{"Laundry", DONE, nil, 0})
 	// output:
 	// [v] Laundry <nil>
 }

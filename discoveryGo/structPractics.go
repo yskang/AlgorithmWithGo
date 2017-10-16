@@ -30,6 +30,7 @@ type Task struct {
 	Title    string    `json:"title,omitempty"`
 	Status   status    `json:"status,omitempty"`
 	Deadline *Deadline `json:"deadline,omitempty"`
+	Priority int		`json:"priority,omitempty"`
 }
 
 func (s status) String() string {
