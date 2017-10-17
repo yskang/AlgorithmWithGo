@@ -202,3 +202,65 @@ func FanIn(ins ...<-chan int) <-chan int {
 	return out
 }
 
+func Distribute(p IntPipe, n int) IntPipe {
+	return func(in <-chan int) <-chan int {
+		cs := make([]<-chan int, n)
+		for i := 0; i < n; i++ {
+			cs[i] = p(in)
+		}
+		return FanIn(cs...)
+	}
+}
+
+func FanIn3(in1, in2, in3 <-chan int) <-chan int {
+	out := make(chan int)
+	openCnt := 3
+	closeChan := func(c *<-chan int) bool {
+		*c = nil
+		openCnt--
+		return openCnt == 0
+	}
+	go func() {
+		defer close(out)
+		for {
+			select {
+			case n, ok := <-in1:
+				if ok {
+					out <- n
+				} else if closeChan(&in1) {
+					return
+				}
+			case n, ok := <-in2:
+				if ok {
+					out <- n
+				} else if closeChan(&in2) {
+					return
+				}
+			case n, ok := <-in3:
+				if ok {
+					out <- n
+				} else if closeChan(&in3) {
+					return
+				}
+			}
+		}
+	}()
+	return out
+}
+
+func Example_FanIn3() {
+	c1, c2, c3 := make(chan int), make(chan  int), make(chan int)
+	sendInts := func(c chan<- int, begin, end int) {
+		defer close(c)
+		for i := begin; i < end; i++ {
+			c <- i
+		}
+	}
+	go sendInts(c1, 11, 14)
+	go sendInts(c2, 21, 23)
+	go sendInts(c3, 31, 35)
+	for n := range FanIn3(c1, c2, c3) {
+		fmt.Print(n, ",")
+	}
+	// output:
+}
