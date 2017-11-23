@@ -5,20 +5,24 @@ func GenerateParenthesis(n int) []string {
 }
 
 func generateParenthesis(n int) []string {
-	res := make([]string, 0)
-	addingpar(&res, "", n, 0)
-	return res
+	ans := make([]string, 0)
+	genParenthesis(&ans, n, 0, "")
+	return ans
 }
-func addingpar(v *[]string, str string, toOpen int, toClose int) {
+
+func genParenthesis(ansList *[]string, toOpen int, toClose int, stringToMake string) {
 	if toOpen == 0 && toClose == 0 {
-		*v = append(*v, str)
+		*ansList = append(*ansList, stringToMake)
 		return
 	}
-	if toClose > 0 {
-		addingpar(v, str + ")", toOpen, toClose-1)
-	}
+
 	if toOpen > 0 {
-		addingpar(v, str + "(", toOpen-1, toClose+1)
+		genParenthesis(ansList, toOpen-1, toClose+1, stringToMake+ "(")
+	}
+
+	if toClose > 0 {
+		genParenthesis(ansList, toOpen, toClose-1, stringToMake+ ")")
 	}
 }
+
 
