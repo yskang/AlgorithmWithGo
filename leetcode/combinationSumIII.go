@@ -1,6 +1,8 @@
 package leetcode
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func CombinationSum3(k int, n int) [][]int {
 	return combinationSum3(k, n)
@@ -8,50 +10,61 @@ func CombinationSum3(k int, n int) [][]int {
 
 func combinationSum3(k int, n int) [][]int {
 	ans := make([][]int, 0)
-	nextComb := getNextComb(k)
-	for {
-		comb, hasNext := nextComb()
-		if sumOf(comb) == n {
-			ans = append(ans, comb)
+	next := make(chan int)
+
+	for c := range combGen(9, k, next) {
+		sum := 0
+		for _, s := range c {
+			sum += s + 1
 		}
-		if !hasNext {
-			break
+		if sum == n {
+			temp := make([]int, k)
+			for i := 0 ; i < k ; i++ {
+				temp[i] = c[i]+1
+			}
+			ans = append(ans, temp)
 		}
+		next <- 0
 	}
 
 	return ans
 }
 
-func sumOf(ints []int) int {
-	sum := 0
-	for _, i := range ints {
-		sum += i
+
+func GenSum(a, b int) string {
+	next:= make(chan int)
+	for c := range combGen(5, 3, next) {
+		fmt.Println(c)
+		next <- 0
 	}
-	return sum
+	return ""
 }
 
-func getNextComb(size int) func()([]int, bool) {
-	combination(make([]int, 5), 0, 5, 3, 0)
-	n := 0
-	hasNext := true
-	return func() ([]int, bool) {
+func combGen(a, b int, nc chan int) <-chan []int {
+	c := make(chan []int)
+	go func(n, m int) {
+		s := make([]int, m)
+		last := m - 1
+		var rc func(int, int)
 
-		n += 1
-		if n == 10 {
-			hasNext = false
+		rc = func(i, next int) {
+			for j := next; j < n; j++ {
+				s[i] = j
+				if i == last {
+					c <- s
+					<- nc
+					if s[0] == a - b {
+						close(c)
+						return
+					}
+				} else {
+					rc(i+1, j+1)
+				}
+			}
+			return
 		}
-		return []int{}, hasNext
-	}
-}
+		rc(0, 0)
+	} (a, b)
 
-func combination(arr []int, index int, n int, r int, target int) {
-	if r == 0 {
-		fmt.Println(arr, index)
-	} else if target == n {
-		return
-	} else {
-		arr[index] = target
-		combination(arr, index+1, n, r-1, target+1)
-		combination(arr, index, n, r, target+1)
-	}
+	return c
 }

@@ -12,3 +12,9 @@ func ExampleCombinationSumIII()  {
 	// [[1 2 4]]
 	// [[1 2 6] [1 3 5] [2 3 4]]
 }
+
+func ExampleGenerator() {
+	fmt.Println(leetcode.GenSum(1,2))
+	// output:
+	//
+}
