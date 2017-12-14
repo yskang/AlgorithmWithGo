@@ -1,15 +1,34 @@
 package leetcode
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func Subsets(nums []int) [][]int {
 	return subsets(nums)
 }
 
-func subsets(nums []int) [][]int {
+// get subsets using combination
+func subsets_(nums []int) [][]int {
 	ans := make([][]int, 0)
 	for i := 0 ; i <= len(nums) ; i++ {
 		ans = append(ans, getSubset(nums, i)...)
+	}
+	return ans
+}
+
+// get subsets using bit manipulation
+func subsets(nums []int) [][]int {
+	ans := make([][]int, 0)
+	for i := 0 ; i < int(math.Pow(float64(2), float64(len(nums)))) ; i++ {
+		temp := make([]int, 0)
+		for j, n := range nums {
+			if (i >> uint(j))&1 == 1 {
+				temp = append(temp, n)
+			}
+		}
+		ans = append(ans, temp)
 	}
 	return ans
 }
