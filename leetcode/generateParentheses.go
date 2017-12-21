@@ -1,4 +1,4 @@
-package leetcodeTest
+package leetcode
 
 func GenerateParenthesis(n int) []string {
 	return generateParenthesis(n)

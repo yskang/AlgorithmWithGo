@@ -1,9 +1,12 @@
 package leetcodeTest
 
-import "fmt"
+import (
+	"fmt"
+	"AlgorithmWithGo/leetcode"
+)
 
 func ExampleGenerateParenthesis() {
-	fmt.Println(generateParenthesis(3))
+	fmt.Println(leetcode.GenerateParenthesis(3))
 	// output:
 	// [((())) (()()) (())() ()(()) ()()()]
 }
