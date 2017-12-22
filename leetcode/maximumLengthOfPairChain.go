@@ -4,6 +4,7 @@ import (
 	"sort"
 )
 
+// FindLongestChain find longest chain
 func FindLongestChain(pairs [][]int) int {
 	return findLongestChain(pairs)
 }
@@ -30,7 +31,7 @@ func findLongestChain(pairs [][]int) int {
 
 type tuple struct {
 	start int
-	end int
+	end   int
 }
 
 func getMax(start []int, pairs [][]int, memo map[tuple]int) int {

@@ -14,6 +14,7 @@ import (
  * }
  */
 
+// ConstructMaximumBinaryTree is construct maximum binary tree
 func ConstructMaximumBinaryTree(nums []int) *myLibs.TreeNode {
 	return constructMaximumBinaryTree(nums)
 }
@@ -22,7 +23,7 @@ func constructMaximumBinaryTree(nums []int) *myLibs.TreeNode {
 	if len(nums) == 0 {
 		return nil
 	} else if len(nums) == 1 {
-		return &myLibs.TreeNode{nums[0], nil, nil}
+		return &myLibs.TreeNode{Val: nums[0], Left: nil, Right: nil}
 	}
 
 	maximumIndex, maximumNum := 0, math.MinInt64
@@ -34,5 +35,5 @@ func constructMaximumBinaryTree(nums []int) *myLibs.TreeNode {
 	}
 	leftTree, rightTree := constructMaximumBinaryTree(nums[:maximumIndex]), constructMaximumBinaryTree(nums[maximumIndex+1:])
 
-	return &myLibs.TreeNode{maximumNum, leftTree, rightTree}
+	return &myLibs.TreeNode{Val: maximumNum, Left: leftTree, Right: rightTree}
 }
