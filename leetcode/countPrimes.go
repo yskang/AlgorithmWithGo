@@ -5,6 +5,7 @@ import (
 	"math"
 )
 
+// CountPrimes count Prime numbers
 func CountPrimes() {
 	fmt.Println(countPrimes(50))
 	fmt.Println(countPrimes(100))
@@ -24,7 +25,7 @@ func countPrimes(n int) int {
 	for {
 		buffer[pointer] = false
 
-		for i := pointer + pointer ; i < n ; i += pointer {
+		for i := pointer + pointer; i < n; i += pointer {
 			buffer[i] = true
 		}
 
@@ -32,7 +33,7 @@ func countPrimes(n int) int {
 			break
 		}
 
-		for j := pointer + 1 ; j < n ; j++ {
+		for j := pointer + 1; j < n; j++ {
 			if buffer[j] == false {
 				pointer = j
 				break
@@ -42,7 +43,7 @@ func countPrimes(n int) int {
 
 	count := 0
 
-	for _, check := range(buffer[2:n]) {
+	for _, check := range buffer[2:n] {
 		if check == false {
 			count += 1
 		}
