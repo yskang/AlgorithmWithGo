@@ -8,5 +8,5 @@ import (
 func ExampleSubarraySumEqualsK() {
 	fmt.Println(leetcode.SubarraySum([]int{1}, 0))
 	// output:
-	// 1
+	// 0
 }

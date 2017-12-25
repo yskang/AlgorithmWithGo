@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 )
+
 //import "os"
 
 /**
@@ -22,8 +23,8 @@ type ball struct {
 
 type info struct {
 	golfMap []string
-	width int
-	height int
+	width   int
+	height  int
 }
 
 func (b *ball) setInit(num int) {
@@ -51,31 +52,31 @@ func (b *ball) getNext() []ball {
 	}
 
 	if b.direction[len(b.direction)-1] == "first" {
-		if b.y-b.count >= 0 && b.y-b.count < b.information.height && !b.information.isOnWater(b.x, b.y-b.count){
-			balls = append(balls, ball{append(b.direction, "up"),b.count-1, b.x, b.y-b.count, b.information, b.origin})
+		if b.y-b.count >= 0 && b.y-b.count < b.information.height && !b.information.isOnWater(b.x, b.y-b.count) {
+			balls = append(balls, ball{append(b.direction, "up"), b.count - 1, b.x, b.y - b.count, b.information, b.origin})
 		}
-		if b.y+b.count < b.information.height && !b.information.isOnWater(b.x, b.y+b.count){
-			balls = append(balls, ball{append(b.direction, "down"),b.count-1, b.x, b.y+b.count, b.information, b.origin})
+		if b.y+b.count < b.information.height && !b.information.isOnWater(b.x, b.y+b.count) {
+			balls = append(balls, ball{append(b.direction, "down"), b.count - 1, b.x, b.y + b.count, b.information, b.origin})
 		}
-		if b.x-b.count >= 0 && b.x-b.count < b.information.width && !b.information.isOnWater(b.x-b.count, b.y){
-			balls = append(balls, ball{append(b.direction, "left"),b.count-1, b.x-b.count, b.y, b.information, b.origin})
+		if b.x-b.count >= 0 && b.x-b.count < b.information.width && !b.information.isOnWater(b.x-b.count, b.y) {
+			balls = append(balls, ball{append(b.direction, "left"), b.count - 1, b.x - b.count, b.y, b.information, b.origin})
 		}
 		if b.x+b.count < b.information.width && !b.information.isOnWater(b.x+b.count, b.y) {
-			balls = append(balls, ball{append(b.direction, "right"),b.count-1, b.x+b.count, b.y, b.information, b.origin})
+			balls = append(balls, ball{append(b.direction, "right"), b.count - 1, b.x + b.count, b.y, b.information, b.origin})
 		}
 	} else {
-		if b.direction[len(b.direction)-1] != "down" && b.y-b.count >= 0  && b.y-b.count < b.information.height && !b.information.isOnWater(b.x, b.y-b.count){
+		if b.direction[len(b.direction)-1] != "down" && b.y-b.count >= 0 && b.y-b.count < b.information.height && !b.information.isOnWater(b.x, b.y-b.count) {
 
-			balls = append(balls, ball{append(append([]string{}, b.direction...), "up"),b.count-1, b.x, b.y-b.count, b.information, b.origin})
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "up"), b.count - 1, b.x, b.y - b.count, b.information, b.origin})
 		}
-		if b.direction[len(b.direction)-1] != "up" && b.y+b.count < b.information.height && !b.information.isOnWater(b.x, b.y+b.count){
-			balls = append(balls, ball{append(append([]string{}, b.direction...), "down"),b.count-1, b.x, b.y+b.count, b.information, b.origin})
+		if b.direction[len(b.direction)-1] != "up" && b.y+b.count < b.information.height && !b.information.isOnWater(b.x, b.y+b.count) {
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "down"), b.count - 1, b.x, b.y + b.count, b.information, b.origin})
 		}
-		if b.direction[len(b.direction)-1] != "right" && b.x-b.count >= 0 && b.x-b.count < b.information.width && !b.information.isOnWater(b.x-b.count, b.y){
-			balls = append(balls, ball{append(append([]string{}, b.direction...), "left"),b.count-1, b.x-b.count, b.y, b.information, b.origin})
+		if b.direction[len(b.direction)-1] != "right" && b.x-b.count >= 0 && b.x-b.count < b.information.width && !b.information.isOnWater(b.x-b.count, b.y) {
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "left"), b.count - 1, b.x - b.count, b.y, b.information, b.origin})
 		}
-		if b.direction[len(b.direction)-1] != "left" && b.x+b.count < b.information.width && !b.information.isOnWater(b.x+b.count, b.y){
-			balls = append(balls, ball{append(append([]string{}, b.direction...), "right"),b.count-1, b.x+b.count, b.y, b.information, b.origin})
+		if b.direction[len(b.direction)-1] != "left" && b.x+b.count < b.information.width && !b.information.isOnWater(b.x+b.count, b.y) {
+			balls = append(balls, ball{append(append([]string{}, b.direction...), "right"), b.count - 1, b.x + b.count, b.y, b.information, b.origin})
 		}
 	}
 
@@ -87,7 +88,7 @@ type hole struct {
 	y int
 }
 
-func main() {
+func main_() {
 	var width, height int
 	fmt.Scan(&width, &height)
 
@@ -158,7 +159,7 @@ func main() {
 	mergeRoutes := make([][]route, len(balls)+1)
 	mergeRoutes[0] = make([]route, 1)
 	mergeRoutes[0][0] = makeRoute(width, height)
-	for i := 1 ; i <= len(balls) ; i++ {
+	for i := 1; i <= len(balls); i++ {
 		mergeRoutes[i] = make([]route, 0)
 	}
 
@@ -170,7 +171,6 @@ func main() {
 	for _, row := range mergeRoutes[len(balls)][0].print() {
 		fmt.Println(row)
 	}
-
 
 }
 
@@ -188,7 +188,7 @@ func drawMergeRoute(routeMap map[position][]route, balls []ball, i int, mergeRou
 		}
 	}
 
-	drawMergeRoute(routeMap, balls, i + 1, mergeRoutes)
+	drawMergeRoute(routeMap, balls, i+1, mergeRoutes)
 }
 
 func merge(r route, rm route) route {
@@ -204,7 +204,6 @@ func merge(r route, rm route) route {
 	return merged
 }
 
-
 func isCross(r route, rm route) bool {
 	for y := range r.cells {
 		for x := range r.cells[y] {
@@ -216,7 +215,6 @@ func isCross(r route, rm route) bool {
 
 	return false
 }
-
 
 func vector2route(vector []string, p position, width int, height int, num int) route {
 	r := makeRoute(width, height)
@@ -243,7 +241,7 @@ func makeRoute(width int, height int) route {
 
 func (c *route) setDirection(p position, direction string, length int) position {
 	x, y := p.x, p.y
-	for i := 0 ; i < length ; i++ {
+	for i := 0; i < length; i++ {
 		switch direction {
 		case "up":
 			c.cells[p.y-i][p.x] = "^"
@@ -305,7 +303,6 @@ func hitBall(field []string, b ball, routeMap map[position][][]string) {
 		hitBall(field, nextBall, routeMap)
 	}
 }
-
 
 type position struct {
 	x int
