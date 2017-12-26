@@ -1,5 +1,6 @@
 package leetcode
 
+// FourSumCount is solution of leetcode problem, 4 Sum II
 func FourSumCount(A []int, B []int, C []int, D []int) int {
 	return fourSumCount(A, B, C, D)
 }
@@ -10,13 +11,13 @@ func fourSumCount(A []int, B []int, C []int, D []int) int {
 
 	for _, a := range A {
 		for _, b := range B {
-			mapA[a + b] += 1
+			mapA[a+b]++
 		}
 	}
 
 	for _, c := range C {
 		for _, d := range D {
-			mapB[c+d] += 1
+			mapB[c+d]++
 		}
 	}
 
