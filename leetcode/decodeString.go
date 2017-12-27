@@ -27,7 +27,6 @@ func decodeString(s string) string {
 				if c == '[' {
 					stack.push(string(c))
 				} else {
-					// fmt.Println(stack.String())
 					temp := stack.pop()
 					stack.pop()
 					num, _ := strconv.Atoi(stack.pop())
