@@ -6,6 +6,26 @@ func SearchMatrixII(matrix [][]int, target int) bool {
 }
 
 func searchMatrixII(matrix [][]int, target int) bool {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return false
+	}
+
+	x, y := 0, len(matrix)-1
+
+	for {
+		if x < 0 || x == len(matrix[0]) || y < 0 || y == len(matrix) {
+			return false
+		} else if matrix[y][x] == target {
+			return true
+		} else if matrix[y][x] > target {
+			y--
+		} else {
+			x++
+		}
+	}
+}
+
+func searchMatrixII_(matrix [][]int, target int) bool {
 	if len(matrix) == 0 {
 		return false
 	} else if len(matrix[0]) == 0 {
