@@ -1,21 +1,21 @@
 package leetcode
 
 import (
-	"github.com/yskang/leetcodeUtil/treeNode"
+	"github.com/yskang/leetcodeUtil/leetData"
 )
 
-func InorderTraversal(root *treeNode.TreeNode) []int {
+func InorderTraversal(root *leetData.TreeNode) []int {
 	return inorderTraversal(root)
 }
 
-func inorderTraversal(root *treeNode.TreeNode) []int {
+func inorderTraversal(root *leetData.TreeNode) []int {
 	if root == nil {
 		return []int{}
 	}
 	return append(append(inorder(root.Left), root.Val), inorder(root.Right)...)
 }
 
-func inorder(node *treeNode.TreeNode) []int {
+func inorder(node *leetData.TreeNode) []int {
 	if node == nil {
 		return []int{}
 	}

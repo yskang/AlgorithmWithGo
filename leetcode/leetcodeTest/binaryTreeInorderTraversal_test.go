@@ -4,11 +4,11 @@ import (
 	"AlgorithmWithGo/leetcode"
 	"fmt"
 
-	"github.com/yskang/leetcodeUtil/treeNode"
+	"github.com/yskang/leetcodeUtil/leetData"
 )
 
 func ExampleInorderTraversal() {
-	fmt.Println(leetcode.InorderTraversal(treeNode.MakeTreeNode("1,null,2,3")))
+	fmt.Println(leetcode.InorderTraversal(leetData.MakeTreeNode("1,null,2,3")))
 	// output:
 	// [1 3 2]
 }
