@@ -36,23 +36,20 @@ func sortColors_(nums []int) {
 
 // swap method, using constant memory
 func sortColors(nums []int) {
+	log.Println(nums)
 	zero, two, i := 0, len(nums)-1, 0
 	for {
 		if nums[i] == 0 {
-			for j := i; j-1 >= zero; j-- {
-				nums[j-1], nums[j] = nums[j], nums[j-1]
-				log.Println(nums)
-			}
+			nums[zero], nums[i] = nums[i], nums[zero]
+			log.Println(nums, "swap", zero, i, "now zero is", zero+1)
 			zero++
-			i = zero
+			i++
 		} else if nums[i] == 2 {
-			if i == two {
+			if i >= two {
 				break
 			}
-			for j := i; j+1 <= two; j++ {
-				nums[j], nums[j+1] = nums[j+1], nums[j]
-				log.Println(nums)
-			}
+			nums[two], nums[i] = nums[i], nums[two]
+			log.Println(nums, "swap", i, two, "now tow is", two-1)
 			two--
 		} else {
 			i++
