@@ -1,12 +1,15 @@
 package leetcode
 
+// MaxArea is a solution for MaxArea of leetcode.
 func MaxArea(height []int) int {
 	return maxArea(height)
 }
 
-const LEFT = 0
-const RIGHT = 1
-const EQ = 2
+const (
+	leftSide = iota
+	rightSide
+	equalSides
+)
 
 func maxArea(height []int) int {
 	max, left, right := 0, 0, len(height)-1
@@ -17,13 +20,13 @@ func maxArea(height []int) int {
 		if max < area {
 			max = area
 		}
-		if side == LEFT {
+		if side == leftSide {
 			left++
-		} else if side == RIGHT {
+		} else if side == rightSide {
 			right--
 		} else {
 			_, minSide := minHeight(height[left+1], height[right-1])
-			if minSide == LEFT {
+			if minSide == leftSide {
 				right--
 			} else {
 				left++
@@ -39,9 +42,9 @@ func maxArea(height []int) int {
 
 func minHeight(a, b int) (int, int) {
 	if a < b {
-		return a, LEFT
+		return a, leftSide
 	} else if a == b {
-		return a, EQ
+		return a, equalSides
 	}
-	return b, RIGHT
+	return b, rightSide
 }
