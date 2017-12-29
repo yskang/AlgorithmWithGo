@@ -9,7 +9,49 @@ func Flatten(root *leetData.TreeNode) {
 	flatten(root)
 }
 
+// use generator..
 func flatten(root *leetData.TreeNode) {
+	nodes := make([]*leetData.TreeNode, 0)
+	for node := range getNode(root) {
+		nodes = append(nodes, node)
+	}
+
+	for _, node := range nodes[1:] {
+		root.Left = nil
+		root.Right = node
+		root = root.Right
+	}
+}
+
+func getNode(root *leetData.TreeNode) <-chan *leetData.TreeNode {
+	c := make(chan *leetData.TreeNode)
+	var fr func(r *leetData.TreeNode)
+	count := 0
+
+	fr = func(r *leetData.TreeNode) {
+		count++
+		if r == nil {
+			count--
+			if count == 0 {
+				close(c)
+			}
+			return
+		}
+		c <- &(leetData.TreeNode{Val: r.Val, Left: nil, Right: nil})
+		fr(r.Left)
+		fr(r.Right)
+		count--
+		if count == 0 {
+			close(c)
+		}
+	}
+
+	go fr(root)
+	return c
+}
+
+// recursive way
+func flatten_(root *leetData.TreeNode) {
 	flattenTree(root)
 }
 
