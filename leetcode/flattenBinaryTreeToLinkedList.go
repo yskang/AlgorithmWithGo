@@ -11,6 +11,9 @@ func Flatten(root *leetData.TreeNode) {
 
 // use generator..
 func flatten(root *leetData.TreeNode) {
+	if root == nil {
+		return
+	}
 	nodes := make([]*leetData.TreeNode, 0)
 	for node := range getNode(root) {
 		nodes = append(nodes, node)
@@ -25,28 +28,21 @@ func flatten(root *leetData.TreeNode) {
 
 func getNode(root *leetData.TreeNode) <-chan *leetData.TreeNode {
 	c := make(chan *leetData.TreeNode)
-	var fr func(r *leetData.TreeNode)
-	count := 0
 
-	fr = func(r *leetData.TreeNode) {
-		count++
-		if r == nil {
-			count--
-			if count == 0 {
-				close(c)
+	go func() {
+		var fr func(r *leetData.TreeNode)
+		fr = func(r *leetData.TreeNode) {
+			if r == nil {
+				return
 			}
-			return
+			c <- r
+			fr(r.Left)
+			fr(r.Right)
 		}
-		c <- &(leetData.TreeNode{Val: r.Val, Left: nil, Right: nil})
-		fr(r.Left)
-		fr(r.Right)
-		count--
-		if count == 0 {
-			close(c)
-		}
-	}
+		fr(root)
+		close(c)
+	}()
 
-	go fr(root)
 	return c
 }
 
