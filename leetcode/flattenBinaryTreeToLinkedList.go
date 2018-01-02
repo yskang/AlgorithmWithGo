@@ -9,8 +9,44 @@ func Flatten(root *leetData.TreeNode) {
 	flatten(root)
 }
 
-// use generator..
 func flatten(root *leetData.TreeNode) {
+	if root == nil {
+		return
+	}
+	p := root
+	for node := range nodeGen(root) {
+		if node == p {
+			continue
+		}
+		p.Left = nil
+		p.Right = node
+		p = node
+	}
+}
+
+func nodeGen(root *leetData.TreeNode) <-chan *leetData.TreeNode {
+	c := make(chan *leetData.TreeNode)
+
+	go func() {
+		var walk func(r *leetData.TreeNode)
+		walk = func(r *leetData.TreeNode) {
+			if r == nil {
+				return
+			}
+			left, right := r.Left, r.Right
+			c <- r
+			walk(left)
+			walk(right)
+		}
+		walk(root)
+		close(c)
+	}()
+
+	return c
+}
+
+// use generator and list
+func flatten__(root *leetData.TreeNode) {
 	if root == nil {
 		return
 	}
