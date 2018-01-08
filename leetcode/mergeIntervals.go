@@ -15,6 +15,37 @@ func MergeIntervals(intervals []Interval) []Interval {
 }
 
 func mergeIntervals(intervals []Interval) []Interval {
+	if len(intervals) == 0 {
+		return intervals
+	}
+
+	sort.Slice(intervals, func(i, j int) bool {
+		if intervals[i].Start < intervals[j].Start {
+			return true
+		}
+		return false
+	})
+
+	merged := make([]Interval, 0)
+
+	merged = append(merged, intervals[0])
+	for _, interval := range intervals[1:] {
+		lastInterval := merged[len(merged)-1]
+		if lastInterval.End < interval.Start {
+			merged = append(merged, interval)
+		} else {
+			maxLast := lastInterval.End
+			if lastInterval.End < interval.End {
+				maxLast = interval.End
+			}
+			merged[len(merged)-1] = Interval{lastInterval.Start, maxLast}
+		}
+	}
+
+	return merged
+}
+
+func mergeIntervals2(intervals []Interval) []Interval {
 	newInterval := make([]Interval, 0)
 	type point struct {
 		position int
