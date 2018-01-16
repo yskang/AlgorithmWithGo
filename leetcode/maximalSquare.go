@@ -1,7 +1,5 @@
 package leetcode
 
-import "log"
-
 func MaximalSquare(matrix [][]byte) int {
 	return maximalSquare(matrix)
 }
@@ -10,30 +8,21 @@ func maximalSquare(matrix [][]byte) int {
 	newMap := make([][]int, len(matrix))
 	max := 0
 	for y, row := range matrix {
-		if row[0] == '1' {
-			newMap[y] = append(newMap[y], 1)
-		} else {
-			newMap[y] = append(newMap[y], 0)
-		}
-		for _, column := range row[1:] {
+		newMap[y] = make([]int, len(row))
+		newMap[y][0] = int(row[0] - '0')
+		for i, column := range row[1:] {
 			if column == '0' {
-				newMap[y] = append(newMap[y], 0)
+				newMap[y][i+1] = 0
 			} else {
-				newMap[y] = append(newMap[y], newMap[y][len(newMap[y])-1]+1)
+				newMap[y][i+1] = newMap[y][i] + 1
 			}
 		}
 	}
 
-	for _, row := range newMap {
-		log.Println(row)
-	}
-
 	for y, row := range newMap {
 		for x, v := range row {
-			if v != 0 {
-				log.Println("check ", x, y)
+			if max < v {
 				m := getMaxCol(newMap, x, y)
-				log.Println("down ", m)
 				if max < m {
 					max = m
 				}
@@ -49,7 +38,6 @@ func getMaxCol(matrix [][]int, x, y int) int {
 	step := 0
 
 	for v := val; v >= 1; v-- {
-		log.Println("for val", v)
 		for i := 1; y+i < len(matrix); i++ {
 			if matrix[y+i][x] < v {
 				break
