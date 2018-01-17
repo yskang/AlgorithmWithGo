@@ -1,9 +1,42 @@
 package leetcode
 
 func MaximalSquare(matrix [][]byte) int {
-	return maximalSquare(matrix)
+	return maximalSquareDP(matrix)
 }
 
+func maximalSquareDP(matrix [][]byte) int {
+	dp := make([][]int, len(matrix)+1)
+	dp[0] = make([]int, len(matrix[0])+1)
+
+	maxSquare := 0
+	for y := 1; y <= len(matrix); y++ {
+		dp[y] = make([]int, len(matrix[0])+1)
+		for x := 1; x <= len(matrix[0]); x++ {
+			if matrix[y-1][x-1] == '1' {
+				dp[y][x] = minSq(dp[y][x-1], dp[y-1][x-1], dp[y-1][x]) + 1
+				if maxSquare < dp[y][x] {
+					maxSquare = dp[y][x]
+				}
+			}
+		}
+	}
+	return maxSquare * maxSquare
+}
+
+func minSq(a, b, c int) int {
+	if a <= b && a <= c {
+		return a
+	}
+	if b <= a && b <= c {
+		return b
+	}
+	if c <= a && c <= b {
+		return c
+	}
+	return 0
+}
+
+// my original solution
 func maximalSquare(matrix [][]byte) int {
 	newMap := make([][]int, len(matrix))
 	max := 0
