@@ -6,10 +6,14 @@ import (
 )
 
 func ExampleJumpGame() {
+	fmt.Println(leetcode.CanJump([]int{1, 2, 3}))
+	fmt.Println(leetcode.CanJump([]int{2, 0}))
 	fmt.Println(leetcode.CanJump([]int{0}))
 	fmt.Println(leetcode.CanJump([]int{2, 3, 1, 1, 4}))
 	fmt.Println(leetcode.CanJump([]int{3, 2, 1, 0, 4}))
 	// output:
+	// true
+	// true
 	// true
 	// true
 	// false

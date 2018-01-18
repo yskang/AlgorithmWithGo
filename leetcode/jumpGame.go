@@ -2,7 +2,7 @@ package leetcode
 
 // CanJump is a solution of the problem "55. Jump Game" in leetcode
 func CanJump(nums []int) bool {
-	return canJumpGreedy(nums)
+	return canJump(nums)
 }
 
 func canJumpGreedy(nums []int) bool {
@@ -18,26 +18,22 @@ func canJumpGreedy(nums []int) bool {
 func canJump(nums []int) bool {
 	isEnd := false
 	visitTable := make([]bool, len(nums))
-	jumpTo(0, nums, &isEnd, &visitTable)
-	if isEnd {
+	if len(nums) == 1 {
 		return true
 	}
-	return false
+	jumpTo(0, nums, &isEnd, &visitTable)
+	return isEnd
 }
 
 func jumpTo(current int, nums []int, isEnd *bool, visitTable *[]bool) {
-	if *isEnd == true {
-		return
-	}
-	if (*visitTable)[current] {
-		return
-	}
 	(*visitTable)[current] = true
-	if current >= len(nums)-1 {
-		*isEnd = true
-		return
-	}
-	for i := 1; i <= nums[current]; i++ {
-		jumpTo(current+i, nums, isEnd, visitTable)
+	for i := nums[current]; i >= 1; i-- {
+		if current+i >= len(nums)-1 {
+			*isEnd = true
+			return
+		}
+		if !(*visitTable)[current+i] {
+			jumpTo(current+i, nums, isEnd, visitTable)
+		}
 	}
 }
