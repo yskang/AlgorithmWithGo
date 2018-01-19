@@ -25,7 +25,7 @@ func quickSortList(list *leetData.ListNode) (*leetData.ListNode, *leetData.ListN
 	less, more, equal = &leetData.ListNode{}, &leetData.ListNode{}, &leetData.ListNode{}
 	current, lessTail, equalTail, moreTail = list, less, equal, more
 
-	for current.Next != nil {
+	for current != nil {
 		if current.Val < pivot.Val {
 			lessTail.Next = current
 			lessTail = current
@@ -42,17 +42,6 @@ func quickSortList(list *leetData.ListNode) (*leetData.ListNode, *leetData.ListN
 			current = current.Next
 			equalTail.Next = nil
 		}
-	}
-
-	if current.Val < pivot.Val {
-		lessTail.Next = current
-		lessTail = current
-	} else if current.Val > pivot.Val {
-		moreTail.Next = current
-		moreTail = current
-	} else {
-		equalTail.Next = current
-		equalTail = current
 	}
 
 	lessH, lessT := quickSortList(less.Next)
