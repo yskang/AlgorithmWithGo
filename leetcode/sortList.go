@@ -4,6 +4,7 @@ import (
 	"github.com/yskang/leetcodeUtil/leetData"
 )
 
+// SortList is a solution of the problem "148. Sort List" in leetcode
 func SortList(head *leetData.ListNode) *leetData.ListNode {
 	return sortList(head)
 }
