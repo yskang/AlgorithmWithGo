@@ -31,12 +31,6 @@ func coinChange(coins []int, amount int) int {
 
 func makeAmount(number int, coins []int, total []int) int {
 	minCount := math.MaxInt64
-	// for i := 1; i <= number; i++ {
-	// 	count := total[i] + total[number-i]
-	// 	if count > 0 && count < minCount {
-	// 		minCount = count
-	// 	}
-	// }
 
 	for _, coin := range coins {
 		if number-coin >= 0 && number-coin < len(total) && coin < len(total) {
