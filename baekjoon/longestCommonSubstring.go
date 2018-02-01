@@ -5,93 +5,90 @@ import (
 	"fmt"
 	"os"
 	"sort"
-	"strings"
 )
 
 func LongestCommonSubstring() {
-	MAXN := 200020
 	scanner := bufio.NewScanner(os.Stdin)
 
 	scanner.Scan()
 	strA := scanner.Text()
-
 	scanner.Scan()
 	strB := scanner.Text()
 
-	str := strA + "$" + strB
+	str := strA + "!" + strB
 
-	group := make([]int, 100)
-	tempGroup := make([]int, MAXN)
-	team := 1
 	n := len(str)
-	m := len(strA)
-	suffixArray := make([]int, MAXN)
+	lenA := len(strA)
+	// lenB := len(strB)
 
-	for i := 0; i < n; i++ {
-		suffixArray[i] = i
-		group[i] = int(str[i] - 'a')
+	sa := make([]int, len(str))
+	w := 1
+
+	for i := range str {
+		sa[i] = i
 	}
 
-	comp := func(i, j int) bool {
-		x, y := suffixArray[i], suffixArray[j]
-		if group[x] == group[y] {
-			return group[x+team] < group[y+team]
+	for w <= n {
+		sort.Slice(sa, func(i, j int) bool {
+			start, end := sa[i], sa[i]+w
+			if sa[i]+w > n {
+				end = n
+			}
+			a := str[start:end]
+			start = sa[j]
+			end = sa[j] + w
+			if sa[j]+w > n {
+				end = n
+			}
+			b := str[start:end]
+			return a < b
+		})
+		w *= 2
+	}
+
+	maxLen := 0
+	maxStart := 0
+	minLen := 0
+	prev := sa[0]
+	prevSide, currSide := false, false //front false, back true
+
+	for _, line := range sa[1:] {
+		if prev < lenA {
+			prevSide = false
+		} else {
+			prevSide = true
 		}
-		return group[x] < group[y]
-	}
-
-	for team <= n {
-		group[n] = -1
-		sort.Slice(suffixArray, comp)
-		tempGroup[suffixArray[0]] = 0
-
-		for i := 1; i < n; i++ {
-			if comp(i-1, i) {
-				tempGroup[suffixArray[i]] = tempGroup[suffixArray[i-1]] + 1
+		if line < lenA {
+			currSide = false
+		} else {
+			currSide = true
+		}
+		if prevSide != currSide {
+			if n-prev < n-line {
+				minLen = n - prev
 			} else {
-				tempGroup[suffixArray[i]] = tempGroup[suffixArray[i-1]]
+				minLen = n - line
 			}
-		}
-
-		for i := 0; i < n; i++ {
-			group[i] = tempGroup[i]
-		}
-		team <<= 1
-	}
-
-	rank := make([]int, MAXN)
-	LCP := make([]int, MAXN)
-
-	for i := 0; i < n; i++ {
-		rank[suffixArray[i]] = i
-	}
-	length := 0
-	for i := 0; i < n; i++ {
-		k := rank[i]
-		if k != 0 {
-			j := suffixArray[k-1]
-			for j+length < len(str) && i+length < len(str) && str[j+length] == str[i+length] {
-				length++
-			}
-			LCP[k] = length
-			if length != 0 {
-				length--
-			}
-		}
-	}
-
-	res := make([]string, MAXN)
-	ans := 0
-	for i := 1; i < n; i++ {
-		if (suffixArray[i-1] > m && suffixArray[i] < m) || (suffixArray[i-1] < m && suffixArray[i] > m) {
-			if ans < LCP[i] {
-				ans = LCP[i]
-				for j := 0; j < ans; j++ {
-					res[j] = string(str[j+suffixArray[i]])
+			for i := 0; i < minLen; i++ {
+				if str[prev+i] != str[line+i] {
+					if i > maxLen {
+						maxLen = i
+						maxStart = prev
+					}
+					break
+				}
+				if i == minLen-1 {
+					if i+1 > maxLen {
+						maxLen = i + 1
+						maxStart = line
+					}
 				}
 			}
 		}
+		// fmt.Println(str[prev:], str[line:], prevSide, currSide, maxLen)
+		prev = line
 	}
-	fmt.Println(ans)
-	fmt.Println(strings.Join(res[:ans+1], ""))
+
+	fmt.Println(maxLen)
+	fmt.Println(str[maxStart : maxStart+maxLen])
 }
