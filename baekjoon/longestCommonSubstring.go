@@ -19,32 +19,16 @@ func LongestCommonSubstring() {
 
 	n := len(str)
 	lenA := len(strA)
-	// lenB := len(strB)
 
 	sa := make([]int, len(str))
-	w := 1
+	bucket := make([]int, len(str))
 
 	for i := range str {
 		sa[i] = i
+		bucket[i] = i
 	}
 
-	for w <= n {
-		sort.Slice(sa, func(i, j int) bool {
-			start, end := sa[i], sa[i]+w
-			if sa[i]+w > n {
-				end = n
-			}
-			a := str[start:end]
-			start = sa[j]
-			end = sa[j] + w
-			if sa[j]+w > n {
-				end = n
-			}
-			b := str[start:end]
-			return a < b
-		})
-		w *= 2
-	}
+	sa = sortBucket(str, bucket, 1)
 
 	maxLen := 0
 	maxStart := 0
@@ -85,10 +69,37 @@ func LongestCommonSubstring() {
 				}
 			}
 		}
-		// fmt.Println(str[prev:], str[line:], prevSide, currSide, maxLen)
 		prev = line
 	}
 
 	fmt.Println(maxLen)
 	fmt.Println(str[maxStart : maxStart+maxLen])
+}
+
+func sortBucket(target string, bucket []int, order int) []int {
+	d := make(map[string][]int)
+	dkey := []string{}
+	for _, i := range bucket {
+		to := i + order
+		if to >= len(target) {
+			to = len(target)
+		}
+		key := target[i:to]
+		d[key] = append(d[key], i)
+	}
+	result := []int{}
+
+	for k := range d {
+		dkey = append(dkey, k)
+	}
+
+	sort.Strings(dkey)
+	for _, k := range dkey {
+		if len(d[k]) > 1 {
+			result = append(result, sortBucket(target, d[k], order*2)...)
+		} else {
+			result = append(result, d[k][0])
+		}
+	}
+	return result
 }
